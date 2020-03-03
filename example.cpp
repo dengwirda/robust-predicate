@@ -6,6 +6,8 @@
 
 int main () {
 
+    mp_float::exactinit () ;
+    
     double _pa[3] = {
         +0.0, +0.0, +0.0
         } ;
