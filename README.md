@@ -10,7 +10,7 @@ The following predicates are currently available:
 ````
 orient2d: orientation of 3 points in E^2, or a point wrt. a line.
 inball2d: point-in-circumball (Delaunay-Voronoi tessellations) in E^2. 
-inball2w: point in ortho-ball (Laguerre-Regular tessellations) in E^2.
+inball2w: point-in-ortho-ball (Laguerre-Regular tessellations) in E^2.
 
 orient3d: orientation of 4 points in E^3, or a point wrt. a plane.
 inball3d: point-in-circumball (Delaunay-Voronoi tessellations) in E^3.
