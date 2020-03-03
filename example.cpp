@@ -1,5 +1,5 @@
 
-// g++ -std=c++17 -pedantic -Wall -03 
+// g++ -std=c++17 -pedantic -Wall -03
 // -flto -DNDEBUG example.cpp -oexample
 
 #include "geompred.hpp"

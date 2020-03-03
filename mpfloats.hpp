@@ -48,10 +48,10 @@
 
 #   include "basebase.hpp"
 
-    namespace mp_float 
+    namespace mp_float
     {
     typedef double  real_type;
-    typedef int     indx_type; 
+    typedef int     indx_type;
     }
 
 #   include "expansion/dd_float.hpp"

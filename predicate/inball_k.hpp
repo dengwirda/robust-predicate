@@ -49,7 +49,7 @@
      *
      * Compute an exact determinant using multi-precision
      * expansions, a'la shewchuk
-     * 
+     *
      *   | ax  ay  dot(a, a)  +1. |
      *   | bx  by  dot(b, b)  +1. |
      *   | cx  cy  dot(c, c)  +1. |
@@ -70,7 +70,7 @@
     {
     /*--------------- inball2d predicate, "exact" version */
         mp::expansion< 4 > _a_lift, _b_lift,
-                           _c_lift, _d_lift;        
+                           _c_lift, _d_lift;
         mp::expansion< 4 > _d2_ab_, _d2_ac_,
                            _d2_ad_,
                            _d2_bc_, _d2_bd_,
@@ -100,7 +100,7 @@
         mp::expansion_add(
             mp::expansion_from_sqr(_pd[ 0]),
             mp::expansion_from_sqr(_pd[ 1]),
-            _d_lift ) ;        
+            _d_lift ) ;
 
     /*-------------------------------------- 2 x 2 minors */
         compute_det_2x2(_pa[ 0], _pa[ 1],
@@ -145,7 +145,7 @@
                         _d3_abc, +3) ;
 
     /*-------------------------------------- 4 x 4 result */
-        compute_det_4x4(_d3_bcd, _a_lift, 
+        compute_det_4x4(_d3_bcd, _a_lift,
                         _d3_acd, _b_lift,
                         _d3_abd, _c_lift,
                         _d3_abc, _d_lift,
@@ -164,14 +164,14 @@
         )
     {
     /*--------------- inball2d predicate, "float" version */
-        REAL_TYPE static const _ER = 
-        + 10. * std::pow(mp::_epsilon, 1) + 
+        REAL_TYPE static const _ER =
+        + 10. * std::pow(mp::_epsilon, 1) +
         + 96. * std::pow(mp::_epsilon, 2) ;
 
-        REAL_TYPE _adx, _ady, _ali , 
+        REAL_TYPE _adx, _ady, _ali ,
                   _bdx, _bdy, _bli ,
                   _cdx, _cdy, _cli ;
-        REAL_TYPE _bdxcdy, _cdxbdy , 
+        REAL_TYPE _bdxcdy, _cdxbdy ,
                   _cdxady, _adxcdy ,
                   _adxbdy, _bdxady ;
 
@@ -191,16 +191,16 @@
         _ali = _adx * _adx + _ady * _ady; // lifted terms
 
         _bli = _bdx * _bdx + _bdy * _bdy;
-        
+
         _cli = _cdx * _cdx + _cdy * _cdy;
-        
+
         _bdxcdy = _bdx * _cdy ;           // 2 x 2 minors
         _cdxbdy = _cdx * _bdy ;
         _cdxady = _cdx * _ady ;
         _adxcdy = _adx * _cdy ;
         _adxbdy = _adx * _bdy ;
         _bdxady = _bdx * _ady ;
-        
+
         _BDXCDY = std::abs (_bdxcdy) ;
         _CDXBDY = std::abs (_cdxbdy) ;
         _CDXADY = std::abs (_cdxady) ;
@@ -223,7 +223,7 @@
 
     /*
     --------------------------------------------------------
-     * 
+     *
      * Compute an exact determinant using multi-precision
      * expansions, a'la shewchuk
      *
@@ -248,7 +248,7 @@
     /*--------------- inball2w predicate, "exact" version */
         mp::expansion< 5 > _a_lift, _b_lift,
                            _c_lift, _d_lift;
-        mp::expansion< 4 > _t_lift;        
+        mp::expansion< 4 > _t_lift;
         mp::expansion< 4 > _d2_ab_, _d2_ac_,
                            _d2_ad_,
                            _d2_bc_, _d2_bd_,
@@ -284,7 +284,7 @@
         mp::expansion_add(
             mp::expansion_from_sqr(_pd[ 0]),
             mp::expansion_from_sqr(_pd[ 1]),
-            _t_lift ) ;        
+            _t_lift ) ;
         mp::expansion_sub(
             _t_lift , _pd[ 2] , _d_lift);
 
@@ -331,7 +331,7 @@
                         _d3_abc, +3) ;
 
     /*-------------------------------------- 4 x 4 result */
-        compute_det_4x4(_d3_bcd, _a_lift, 
+        compute_det_4x4(_d3_bcd, _a_lift,
                         _d3_acd, _b_lift,
                         _d3_abd, _c_lift,
                         _d3_abc, _d_lift,
@@ -350,15 +350,15 @@
         )
     {
     /*--------------- inball2w predicate, "float" version */
-        REAL_TYPE static const _ER = 
-        + 10. * std::pow(mp::_epsilon, 1) + 
+        REAL_TYPE static const _ER =
+        + 10. * std::pow(mp::_epsilon, 1) +
         + 96. * std::pow(mp::_epsilon, 2) ;
 
-        REAL_TYPE _adx, _ady, _adw , 
+        REAL_TYPE _adx, _ady, _adw ,
                   _bdx, _bdy, _bdw ,
                   _cdx, _cdy, _cdw ;
         REAL_TYPE _ali, _bli, _cli ;
-        REAL_TYPE _bdxcdy, _cdxbdy , 
+        REAL_TYPE _bdxcdy, _cdxbdy ,
                   _cdxady, _adxcdy ,
                   _adxbdy, _bdxady ;
 
@@ -400,7 +400,7 @@
         _adxcdy = _adx * _cdy ;
         _adxbdy = _adx * _bdy ;
         _bdxady = _bdx * _ady ;
-        
+
         _BDXCDY = std::abs (_bdxcdy) ;
         _CDXBDY = std::abs (_cdxbdy) ;
         _CDXADY = std::abs (_cdxady) ;
@@ -426,7 +426,7 @@
      *
      * Compute an exact determinant using multi-precision
      * expansions, a'la shewchuk
-     * 
+     *
      *   | ax  ay  az  dot(a, a)  +1. |
      *   | bx  by  bz  dot(b, b)  +1. |
      *   | cx  cy  cz  dot(c, c)  +1. |
@@ -450,7 +450,7 @@
     /*--------------- inball3d predicate, "exact" version */
         mp::expansion< 6 > _a_lift, _b_lift,
                            _c_lift, _d_lift,
-                           _e_lift;        
+                           _e_lift;
         mp::expansion< 4 > _d2_ab_, _d2_ac_,
                            _d2_ad_, _d2_ae_,
                            _d2_bc_, _d2_bd_,
@@ -460,7 +460,7 @@
         mp::expansion< 24> _d3_abc, _d3_abd,
                            _d3_abe,
                            _d3_acd, _d3_ace,
-                           _d3_ade, 
+                           _d3_ade,
                            _d3_bcd, _d3_bce,
                            _d3_bde, _d3_cde;
         mp::expansion< 96> _d4abcd, _d4abce,
@@ -470,7 +470,7 @@
 
         _FT = (REAL_TYPE) +0.0E+00;
 
-        mp::expansion< 1 > _pa_zz_(_pa[ 2]); 
+        mp::expansion< 1 > _pa_zz_(_pa[ 2]);
         mp::expansion< 1 > _pb_zz_(_pb[ 2]);
         mp::expansion< 1 > _pc_zz_(_pc[ 2]);
         mp::expansion< 1 > _pd_zz_(_pd[ 2]);
@@ -499,13 +499,13 @@
             mp::expansion_from_sqr(_pd[ 0]),
             mp::expansion_from_sqr(_pd[ 1]),
             mp::expansion_from_sqr(_pd[ 2]),
-            _d_lift ) ;        
+            _d_lift ) ;
 
         mp::expansion_add(
             mp::expansion_from_sqr(_pe[ 0]),
             mp::expansion_from_sqr(_pe[ 1]),
             mp::expansion_from_sqr(_pe[ 2]),
-            _e_lift ) ;        
+            _e_lift ) ;
 
     /*-------------------------------------- 2 x 2 minors */
         compute_det_2x2(_pa[ 0], _pa[ 1],
@@ -621,7 +621,7 @@
                         _d4abcd, +4) ;
 
     /*-------------------------------------- 5 x 5 result */
-        compute_det_5x5(_d4bcde, _a_lift, 
+        compute_det_5x5(_d4bcde, _a_lift,
                         _d4acde, _b_lift,
                         _d4abde, _c_lift,
                         _d4abce, _d_lift,
@@ -642,19 +642,19 @@
         )
     {
     /*--------------- inball3d predicate, "float" version */
-        REAL_TYPE static const _ER = 
-        + 16. * std::pow(mp::_epsilon, 1) + 
+        REAL_TYPE static const _ER =
+        + 16. * std::pow(mp::_epsilon, 1) +
         +224. * std::pow(mp::_epsilon, 2) ;
 
         REAL_TYPE _aex, _aey, _aez ,
-                  _ali, 
+                  _ali,
                   _bex, _bey, _bez ,
                   _bli,
                   _cex, _cey, _cez ,
                   _cli,
                   _dex, _dey, _dez ,
                   _dli;
-        REAL_TYPE _aexbey, _bexaey , 
+        REAL_TYPE _aexbey, _bexaey ,
                   _aexcey, _cexaey ,
                   _bexcey, _cexbey ,
                   _cexdey, _dexcey ,
@@ -666,7 +666,7 @@
 
         REAL_TYPE _AEZ, _BEZ, _CEZ, _DEZ;
         REAL_TYPE _AEXBEY, _BEXAEY ,
-                  _AEXCEY, _CEXAEY , 
+                  _AEXCEY, _CEXAEY ,
                   _BEXCEY, _CEXBEY ,
                   _CEXDEY, _DEXCEY ,
                   _DEXAEY, _AEXDEY ,
@@ -703,7 +703,7 @@
              + _aez * _aez ;
 
         _bli = _bex * _bex + _bey * _bey
-             + _bez * _bez ;        
+             + _bez * _bez ;
 
         _cli = _cex * _cex + _cey * _cey
              + _cez * _cez ;
@@ -726,7 +726,7 @@
         _BEXCEY = std::abs (_bexcey) ;
         _CEXBEY = std::abs (_cexbey) ;
         _BC_ = _BEXCEY + _CEXBEY ;
-    
+
         _cexdey = _cex * _dey;
         _dexcey = _dex * _cey;
         _cd_ = _cexdey - _dexcey ;
@@ -760,41 +760,41 @@
         _BD_ = _BEXDEY + _DEXBEY ;
 
         _abc =                            // 3 x 3 minors
-          _aez * _bc_ - _bez * _ac_  
+          _aez * _bc_ - _bez * _ac_
         + _cez * _ab_ ;
         _ABC =
-          _AEZ * _BC_ + _BEZ * _AC_  
+          _AEZ * _BC_ + _BEZ * _AC_
         + _CEZ * _AB_ ;
 
-        _bcd = 
-          _bez * _cd_ - _cez * _bd_ 
+        _bcd =
+          _bez * _cd_ - _cez * _bd_
         + _dez * _bc_ ;
-        _BCD = 
-          _BEZ * _CD_ + _CEZ * _BD_ 
+        _BCD =
+          _BEZ * _CD_ + _CEZ * _BD_
         + _DEZ * _BC_ ;
 
-        _cda = 
-          _cez * _da_ + _dez * _ac_ 
+        _cda =
+          _cez * _da_ + _dez * _ac_
         + _aez * _cd_ ;
-        _CDA = 
-          _CEZ * _DA_ + _DEZ * _AC_ 
+        _CDA =
+          _CEZ * _DA_ + _DEZ * _AC_
         + _AEZ * _CD_ ;
 
-        _dab = 
-          _dez * _ab_ + _aez * _bd_ 
+        _dab =
+          _dez * _ab_ + _aez * _bd_
         + _bez * _da_ ;
-        _DAB = 
-          _DEZ * _AB_ + _AEZ * _BD_ 
+        _DAB =
+          _DEZ * _AB_ + _AEZ * _BD_
         + _BEZ * _DA_ ;
 
         _FT  =                            // roundoff tol
-          _dli * _ABC + _cli * _DAB 
+          _dli * _ABC + _cli * _DAB
         + _bli * _CDA + _ali * _BCD ;
 
         _FT *= _ER ;
 
         return                            // 4 x 4 result
-          _dli * _abc - _cli * _dab 
+          _dli * _abc - _cli * _dab
         + _bli * _cda - _ali * _bcd ;
     }
 
@@ -803,7 +803,7 @@
      *
      * Compute an exact determinant using multi-precision
      * expansions, a'la shewchuk
-     * 
+     *
      *   | ax  ay  az  dot(a, a) - aw  +1. |
      *   | bx  by  bz  dot(b, b) - bw  +1. |
      *   | cx  cy  cz  dot(c, c) - cw  +1. |
@@ -828,7 +828,7 @@
         mp::expansion< 7 > _a_lift, _b_lift,
                            _c_lift, _d_lift,
                            _e_lift;
-        mp::expansion< 6 > _t_lift;        
+        mp::expansion< 6 > _t_lift;
         mp::expansion< 4 > _d2_ab_, _d2_ac_,
                            _d2_ad_, _d2_ae_,
                            _d2_bc_, _d2_bd_,
@@ -838,7 +838,7 @@
         mp::expansion< 24> _d3_abc, _d3_abd,
                            _d3_abe,
                            _d3_acd, _d3_ace,
-                           _d3_ade, 
+                           _d3_ade,
                            _d3_bcd, _d3_bce,
                            _d3_bde, _d3_cde;
         mp::expansion< 96> _d4abcd, _d4abce,
@@ -848,7 +848,7 @@
 
         _FT = (REAL_TYPE) +0.0E+00;
 
-        mp::expansion< 1 > _pa_zz_(_pa[ 2]); 
+        mp::expansion< 1 > _pa_zz_(_pa[ 2]);
         mp::expansion< 1 > _pb_zz_(_pb[ 2]);
         mp::expansion< 1 > _pc_zz_(_pc[ 2]);
         mp::expansion< 1 > _pd_zz_(_pd[ 2]);
@@ -885,7 +885,7 @@
             mp::expansion_from_sqr(_pd[ 2]),
             _t_lift ) ;
         mp::expansion_sub(
-            _t_lift , _pd[ 3] , _d_lift);        
+            _t_lift , _pd[ 3] , _d_lift);
 
         mp::expansion_add(
             mp::expansion_from_sqr(_pe[ 0]),
@@ -893,7 +893,7 @@
             mp::expansion_from_sqr(_pe[ 2]),
             _t_lift ) ;
         mp::expansion_sub(
-            _t_lift , _pe[ 3] , _e_lift);        
+            _t_lift , _pe[ 3] , _e_lift);
 
     /*-------------------------------------- 2 x 2 minors */
         compute_det_2x2(_pa[ 0], _pa[ 1],
@@ -1009,7 +1009,7 @@
                         _d4abcd, +4) ;
 
     /*-------------------------------------- 5 x 5 result */
-        compute_det_5x5(_d4bcde, _a_lift, 
+        compute_det_5x5(_d4bcde, _a_lift,
                         _d4acde, _b_lift,
                         _d4abde, _c_lift,
                         _d4abce, _d_lift,
@@ -1030,12 +1030,12 @@
         )
     {
     /*--------------- inball3w predicate, "float" version */
-        REAL_TYPE static const _ER = 
-        + 16. * std::pow(mp::_epsilon, 1) + 
+        REAL_TYPE static const _ER =
+        + 16. * std::pow(mp::_epsilon, 1) +
         +224. * std::pow(mp::_epsilon, 2) ;
 
         REAL_TYPE _aex, _aey, _aez ,
-                  _aew, _ali, 
+                  _aew, _ali,
                   _bex, _bey, _bez ,
                   _bew, _bli,
                   _cex, _cey, _cez ,
@@ -1043,7 +1043,7 @@
                   _dex, _dey, _dez ,
                   _dew, _dli;
         REAL_TYPE _aexbey, _bexaey ,
-                  _aexcey, _cexaey , 
+                  _aexcey, _cexaey ,
                   _bexcey, _cexbey ,
                   _cexdey, _dexcey ,
                   _dexaey, _aexdey ,
@@ -1054,7 +1054,7 @@
 
         REAL_TYPE _AEZ, _BEZ, _CEZ, _DEZ;
         REAL_TYPE _ALI, _BLI, _CLI, _DLI;
-        REAL_TYPE _AEXBEY, _BEXAEY , 
+        REAL_TYPE _AEXBEY, _BEXAEY ,
                   _CEXAEY, _AEXCEY ,
                   _BEXCEY, _CEXBEY ,
                   _CEXDEY, _DEXCEY ,
@@ -1098,7 +1098,7 @@
         _ALI = std::abs (_ali) ;
 
         _bli = _bex * _bex + _bey * _bey
-             + _bez * _bez - _bew ;        
+             + _bez * _bez - _bew ;
 
         _BLI = std::abs (_bli) ;
 
@@ -1127,7 +1127,7 @@
         _BEXCEY = std::abs (_bexcey) ;
         _CEXBEY = std::abs (_cexbey) ;
         _BC_ = _BEXCEY + _CEXBEY ;
-    
+
         _cexdey = _cex * _dey;
         _dexcey = _dex * _cey;
         _cd_ = _cexdey - _dexcey ;
@@ -1161,41 +1161,41 @@
         _BD_ = _BEXDEY + _DEXBEY ;
 
         _abc =                            // 3 x 3 minors
-          _aez * _bc_ - _bez * _ac_  
+          _aez * _bc_ - _bez * _ac_
         + _cez * _ab_ ;
         _ABC =
-          _AEZ * _BC_ + _BEZ * _AC_  
+          _AEZ * _BC_ + _BEZ * _AC_
         + _CEZ * _AB_ ;
 
-        _bcd = 
-          _bez * _cd_ - _cez * _bd_ 
+        _bcd =
+          _bez * _cd_ - _cez * _bd_
         + _dez * _bc_ ;
-        _BCD = 
-          _BEZ * _CD_ + _CEZ * _BD_ 
+        _BCD =
+          _BEZ * _CD_ + _CEZ * _BD_
         + _DEZ * _BC_ ;
 
-        _cda = 
-          _cez * _da_ + _dez * _ac_ 
+        _cda =
+          _cez * _da_ + _dez * _ac_
         + _aez * _cd_ ;
-        _CDA = 
-          _CEZ * _DA_ + _DEZ * _AC_ 
+        _CDA =
+          _CEZ * _DA_ + _DEZ * _AC_
         + _AEZ * _CD_ ;
 
-        _dab = 
-          _dez * _ab_ + _aez * _bd_ 
+        _dab =
+          _dez * _ab_ + _aez * _bd_
         + _bez * _da_ ;
-        _DAB = 
-          _DEZ * _AB_ + _AEZ * _BD_ 
+        _DAB =
+          _DEZ * _AB_ + _AEZ * _BD_
         + _BEZ * _DA_ ;
 
         _FT  =                            // roundoff tol
-          _DLI * _ABC + _CLI * _DAB 
+          _DLI * _ABC + _CLI * _DAB
         + _BLI * _CDA + _ALI * _BCD ;
 
         _FT *= _ER ;
 
         return                            // 4 x 4 result
-          _dli * _abc - _cli * _dab 
+          _dli * _abc - _cli * _dab
         + _bli * _cda - _ali * _bcd ;
     }
 

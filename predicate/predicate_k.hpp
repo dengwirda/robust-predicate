@@ -4,13 +4,13 @@
      * PREDICATE-k: robust geometric predicates in E^k.
     --------------------------------------------------------
      *
-     * Compute "robust" geometric predicates using filtered 
+     * Compute "robust" geometric predicates using filtered
      * floating-point + multi-precision expansions.
      *
      * The sign-correctness of each predicate is guaranteed
-     * --- using exact arithmetic where necessary to 
+     * --- using exact arithmetic where necessary to
      * eliminate floating-point round-off. See Shewchuk for
-     * additional detail  
+     * additional detail
      *
      * J. R. Shewchuk (1997), Adaptive Precision Floating-
      * Point Arithmetic & Fast Robust Geometric Predicates
@@ -79,19 +79,19 @@
         )
     {
     /*------------ orient2d predicate, "filtered" version */
-        REAL_TYPE _FT, _rr; 
-            
+        REAL_TYPE _FT, _rr;
+
         _rr = orient2d_f(               // "float" kernel
             _pa, _pb, _pc, _FT
             ) ;
 
         if (_rr > _FT || _rr < -_FT)
             return _rr ;
-        
+
         _rr = orient2d_e(               // "exact" kernel
             _pa, _pb, _pc, _FT
             ) ;
-        
+
         if (_rr > _FT || _rr < -_FT)
             return _rr ;
 
@@ -106,19 +106,19 @@
         )
     {
     /*------------ orient3d predicate, "filtered" version */
-        REAL_TYPE _FT, _rr; 
-            
+        REAL_TYPE _FT, _rr;
+
         _rr = orient3d_f(               // "float" kernel
             _pa, _pb, _pc, _pd, _FT
             ) ;
 
         if (_rr > _FT || _rr < -_FT)
             return _rr ;
-        
+
         _rr = orient3d_e(               // "exact" kernel
             _pa, _pb, _pc, _pd, _FT
             ) ;
-        
+
         if (_rr > _FT || _rr < -_FT)
             return _rr ;
 
@@ -133,19 +133,19 @@
         )
     {
     /*------------ inball2d predicate, "filtered" version */
-        REAL_TYPE _FT, _rr; 
-            
+        REAL_TYPE _FT, _rr;
+
         _rr = inball2d_f(               // "float" kernel
             _pa, _pb, _pc, _pd, _FT
             ) ;
 
         if (_rr > _FT || _rr < -_FT)
             return _rr ;
-        
+
         _rr = inball2d_e(               // "exact" kernel
             _pa, _pb, _pc, _pd, _FT
             ) ;
-        
+
         if (_rr > _FT || _rr < -_FT)
             return _rr ;
 
@@ -167,22 +167,22 @@
         return inball2d (   // equal weights, do inball2d
             _pa, _pb, _pc, _pd
             ) ;
-        }        
+        }
         else
         {
         REAL_TYPE _FT, _rr; // given weights, full kernel
-            
+
         _rr = inball2w_f(               // "float" kernel
             _pa, _pb, _pc, _pd, _FT
             ) ;
 
         if (_rr > _FT || _rr < -_FT)
             return _rr ;
-        
+
         _rr = inball2w_e(               // "exact" kernel
             _pa, _pb, _pc, _pd, _FT
             ) ;
-        
+
         if (_rr > _FT || _rr < -_FT)
             return _rr ;
 
@@ -199,19 +199,19 @@
         )
     {
     /*------------ inball3d predicate, "filtered" version */
-        REAL_TYPE _FT, _rr; 
-            
+        REAL_TYPE _FT, _rr;
+
         _rr = inball3d_f(               // "float" kernel
             _pa, _pb, _pc, _pd, _pe, _FT
             ) ;
 
         if (_rr > _FT || _rr < -_FT)
             return _rr ;
-        
+
         _rr = inball3d_e(               // "exact" kernel
             _pa, _pb, _pc, _pd, _pe, _FT
             ) ;
-        
+
         if (_rr > _FT || _rr < -_FT)
             return _rr ;
 
@@ -235,22 +235,22 @@
         return inball3d (   // equal weights, do inball3d
             _pa, _pb, _pc, _pd, _pe
             ) ;
-        }        
+        }
         else
         {
         REAL_TYPE _FT, _rr; // given weights, full kernel
-            
+
         _rr = inball3w_f(               // "float" kernal
             _pa, _pb, _pc, _pd, _pe, _FT
             ) ;
 
         if (_rr > _FT || _rr < -_FT)
             return _rr ;
-        
+
         _rr = inball3w_e(               // "exact" kernel
             _pa, _pb, _pc, _pd, _pe, _FT
             ) ;
-        
+
         if (_rr > _FT || _rr < -_FT)
             return _rr ;
 
@@ -259,7 +259,7 @@
     }
 
 #   undef REAL_TYPE
-#   undef INDX_TYPE 
+#   undef INDX_TYPE
 
 
     }

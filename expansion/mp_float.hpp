@@ -15,10 +15,10 @@
      *
      * This header provides a stack allocated, compile-time
      * "expansion" object that wraps Shewchuk's operators,
-     * inspired by similar run-time constructs, e.g. Lévy: 
+     * inspired by similar run-time constructs, e.g. Lévy:
      *
-     * B. Lévy (2016), Robustness and efficiency of 
-     * geometric programs: The Predicate Construction Kit 
+     * B. Lévy (2016), Robustness and efficiency of
+     * geometric programs: The Predicate Construction Kit
      * (PCK). Computer-Aided Design, 72, pp. 03-12.
      *
      * Here, various compile-time techniques and template
@@ -55,7 +55,7 @@
      *
     --------------------------------------------------------
      *
-     * Last updated: 02 March, 2020
+     * Last updated: 03 March, 2020
      *
      * Copyright 2020--
      * Darren Engwirda
@@ -100,7 +100,7 @@
 
     public  :
 /*------------------------------ initialising constructor */
-    __inline_call expansion () 
+    __inline_call expansion ()
     {   // just default...
     }
     __inline_call expansion (
@@ -112,7 +112,7 @@
 /*------------------------------ append bits to expansion */
     __inline_call void push (
         real_type  _xx
-        ) 
+        )
     {   this->_xdat[this->_xlen++] = _xx ;
     }
 
@@ -154,31 +154,31 @@
     public  :
 /*------------------------------ helper: init. from a + b */
     __inline_call void from_add (
-        real_type  _aa, real_type  _bb        
+        real_type  _aa, real_type  _bb
         )
     {
-        static_assert( this->_size >= +2, 
+        static_assert( this->_size >= +2,
             "from-add: insufficient alloc.!") ;
 
         this->_xlen =  +2 ;
 
-        one_one_add_full(_aa, _bb, 
-            this->_xdat[1], 
+        one_one_add_full(_aa, _bb,
+            this->_xdat[1],
             this->_xdat[0]) ;
     }
 
 /*------------------------------ helper: init. from a - b */
     __inline_call void from_sub (
-        real_type  _aa, real_type  _bb        
+        real_type  _aa, real_type  _bb
         )
     {
-        static_assert( this->_size >= +2, 
+        static_assert( this->_size >= +2,
             "from-sub: insufficient alloc.!") ;
 
         this->_xlen =  +2 ;
 
-        one_one_sub_full(_aa, _bb, 
-            this->_xdat[1], 
+        one_one_sub_full(_aa, _bb,
+            this->_xdat[1],
             this->_xdat[0]) ;
     }
 
@@ -187,13 +187,13 @@
         real_type  _aa
         )
     {
-        static_assert( this->_size >= +2, 
+        static_assert( this->_size >= +2,
             "from-sqr: insufficient alloc.!") ;
 
         this->_xlen =  +2 ;
 
-        one_square_full (_aa, 
-            this->_xdat[1], 
+        one_square_full (_aa,
+            this->_xdat[1],
             this->_xdat[0]) ;
     }
 
@@ -202,13 +202,13 @@
         real_type  _aa, real_type  _bb
         )
     {
-        static_assert( this->_size >= +2, 
+        static_assert( this->_size >= +2,
             "from-mul: insufficient alloc.!") ;
 
         this->_xlen =  +2 ;
 
-        one_one_mul_full(_aa, _bb, 
-            this->_xdat[1], 
+        one_one_mul_full(_aa, _bb,
+            this->_xdat[1],
             this->_xdat[0]) ;
     }
 
@@ -216,11 +216,11 @@
 
     /*
     --------------------------------------------------------
-     * shortcut utilities to construct basic expansions 
+     * shortcut utilities to construct basic expansions
     --------------------------------------------------------
      */
 
-    __inline_call 
+    __inline_call
         expansion<2> expansion_from_add (
         REAL_TYPE  _aa, REAL_TYPE  _bb
         )
@@ -229,7 +229,7 @@
         return  _ex;
     }
 
-    __inline_call 
+    __inline_call
         expansion<2> expansion_from_sub (
         REAL_TYPE  _aa, REAL_TYPE  _bb
         )
@@ -238,16 +238,16 @@
         return  _ex;
     }
 
-    __inline_call 
+    __inline_call
         expansion<2> expansion_from_sqr (
-        REAL_TYPE  _aa        
+        REAL_TYPE  _aa
         )
     {
         expansion<2> _ex; _ex.from_sqr(_aa) ;
         return  _ex;
     }
 
-    __inline_call 
+    __inline_call
         expansion<2> expansion_from_mul (
         REAL_TYPE  _aa, REAL_TYPE  _bb
         )
@@ -262,10 +262,14 @@
     --------------------------------------------------------
      */
 
-#   if defined(_MSC_VER)
+#   define macro_workaround
+
+#   if defined(macro_workaround)
 
     // unfortunately, msvc doesn't seem to evaluate the
     // constexpr functions correctly...
+
+    // actually, seems to fail for various non-msvc too
 
     // use a macro-based work-around...
 
@@ -298,7 +302,7 @@
              >
     __inline_call INDX_TYPE constexpr sub_alloc (
         expansion <NA> const& _aa ,
-        expansion <NB> const& _bb 
+        expansion <NB> const& _bb
         )
     {
         return _aa._size + _bb._size;
@@ -309,19 +313,20 @@
              >
     __inline_call INDX_TYPE constexpr mul_alloc (
         expansion <NA> const& _aa ,
-        expansion <NB> const& _bb 
+        expansion <NB> const& _bb
         )
     {
         return _aa._size * _bb._size * +2 ;
     }
-#   endif   // msvc
+
+#   endif   //macro-workaround
 
     /*
     --------------------------------------------------------
      * add two multi-precision expansion, a'la shewchuk
     --------------------------------------------------------
      */
-    
+
     template <
         size_t NE, size_t NF, size_t NH
              >
@@ -338,12 +343,12 @@
 
         _hh._xlen = 0;
 
-        if((_fx > _ex) == (_fx > -_ex)) 
+        if((_fx > _ex) == (_fx > -_ex))
         {
             _qq = _ex;
             _ex = _ee[++_ei];
-        } 
-        else 
+        }
+        else
         {
             _qq = _fx;
             _fx = _ff[++_fi];
@@ -351,33 +356,33 @@
 
         if((_ei < _ee._xlen) && (_fi < _ff._xlen))
         {
-            if((_fx > _ex) == (_fx > -_ex)) 
+            if((_fx > _ex) == (_fx > -_ex))
             {
                 one_one_add_fast(
                     _ex, _qq, _qn, _hx);
                 _qq = _qn;
                 _ex = _ee[++_ei];
-            } 
-            else 
+            }
+            else
             {
                 one_one_add_fast(
                     _fx, _qq, _qn, _hx);
-                _qq = _qn;                
+                _qq = _qn;
                 _fx = _ff[++_fi];
             }
             if (_hx != +0.0) _hh.push (_hx) ;
-            
-            while ((_ei < _ee._xlen) && 
+
+            while ((_ei < _ee._xlen) &&
                    (_fi < _ff._xlen) )
             {
-            if((_fx > _ex) == (_fx > -_ex)) 
+            if((_fx > _ex) == (_fx > -_ex))
             {
                 one_one_add_full(
                     _qq, _ex, _qn, _hx);
                 _qq = _qn;
                 _ex = _ee[++_ei] ;
-            } 
-            else 
+            }
+            else
             {
                 one_one_add_full(
                     _qq, _fx, _qn, _hx);
@@ -388,18 +393,18 @@
             }
         }
 
-        while (_ei < _ee._xlen) 
+        while (_ei < _ee._xlen)
         {
             one_one_add_full(_qq, _ex, _qn, _hx);
-            _qq = _qn;            
+            _qq = _qn;
             _ex = _ee[++_ei];
             if (_hx != +0.0) _hh.push (_hx) ;
         }
 
-        while (_fi < _ff._xlen) 
+        while (_fi < _ff._xlen)
         {
             one_one_add_full(_qq, _fx, _qn, _hx);
-            _qq = _qn;            
+            _qq = _qn;
             _fx = _ff[++_fi];
             if (_hx != +0.0) _hh.push (_hx) ;
         }
@@ -419,10 +424,10 @@
         expansion <NC> & _cc
         ) // adapted from:  fast_expansion_sum_zeroelim
     {
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _NN = _aa._size + _bb._size;
 
-        static_assert( _cc._size >= _NN, 
+        static_assert( _cc._size >= _NN,
             "expansion-add: insufficient alloc.!");
 
         if (_aa._xlen == +1 &&      // 1-to-1 unrolling
@@ -480,7 +485,7 @@
             _cc._xlen = +0 ;
 
             two_two_add_full(
-                _aa[1], _aa[0], 
+                _aa[1], _aa[0],
                 _bb[1], _bb[0], _t3, _t2, _t1, _t0);
 
             if (_t0 != +0.0) _cc.push (_t0) ;
@@ -500,7 +505,7 @@
      * sub two multi-precision expansion, a'la shewchuk
     --------------------------------------------------------
      */
-    
+
     template <
         size_t NE, size_t NF, size_t NH
              >
@@ -517,12 +522,12 @@
 
         _hh._xlen = 0;
 
-        if((_fx > _ex) == (_fx > -_ex)) 
+        if((_fx > _ex) == (_fx > -_ex))
         {
             _qq = _ex;
             _ex = _ee[++_ei];
-        } 
-        else 
+        }
+        else
         {
             _qq = _fx;
             _fx =-_ff[++_fi];
@@ -530,33 +535,33 @@
 
         if((_ei < _ee._xlen) && (_fi < _ff._xlen))
         {
-            if((_fx > _ex) == (_fx > -_ex)) 
+            if((_fx > _ex) == (_fx > -_ex))
             {
                 one_one_add_fast(
                     _ex, _qq, _qn, _hx);
                 _qq = _qn;
                 _ex = _ee[++_ei];
-            } 
-            else 
+            }
+            else
             {
                 one_one_add_fast(
                     _fx, _qq, _qn, _hx);
-                _qq = _qn;                
+                _qq = _qn;
                 _fx =-_ff[++_fi];
             }
             if (_hx != +0.0) _hh.push (_hx) ;
-            
-            while ((_ei < _ee._xlen) && 
+
+            while ((_ei < _ee._xlen) &&
                    (_fi < _ff._xlen) )
             {
-            if((_fx > _ex) == (_fx > -_ex)) 
+            if((_fx > _ex) == (_fx > -_ex))
             {
                 one_one_add_full(
                     _qq, _ex, _qn, _hx);
                 _qq = _qn;
                 _ex = _ee[++_ei] ;
-            } 
-            else 
+            }
+            else
             {
                 one_one_add_full(
                     _qq, _fx, _qn, _hx);
@@ -567,18 +572,18 @@
             }
         }
 
-        while (_ei < _ee._xlen) 
+        while (_ei < _ee._xlen)
         {
             one_one_add_full(_qq, _ex, _qn, _hx);
-            _qq = _qn;            
+            _qq = _qn;
             _ex = _ee[++_ei];
             if (_hx != +0.0) _hh.push (_hx) ;
         }
 
-        while (_fi < _ff._xlen) 
+        while (_fi < _ff._xlen)
         {
             one_one_add_full(_qq, _fx, _qn, _hx);
-            _qq = _qn;            
+            _qq = _qn;
             _fx =-_ff[++_fi];
             if (_hx != +0.0) _hh.push (_hx) ;
         }
@@ -598,13 +603,13 @@
         expansion <NC> & _cc
         ) // adapted from: fast_expansion_diff_zeroelim
     {
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _NN = _aa._size + _bb._size;
 
-        static_assert( _cc._size >= _NN, 
+        static_assert( _cc._size >= _NN,
             "expansion-sub: insufficient alloc.!");
 
-        if (_aa._xlen == +1 &&      // 1-to-1 unrolling 
+        if (_aa._xlen == +1 &&      // 1-to-1 unrolling
             _bb._xlen == +1)
         {
             REAL_TYPE _t1, _t0;
@@ -643,7 +648,7 @@
             _cc._xlen = +0 ;
 
             two_two_sub_full(
-                _aa[1], _aa[0], 
+                _aa[1], _aa[0],
                 _bb[1], _bb[0], _t3, _t2, _t1, _t0);
 
             if (_t0 != +0.0) _cc.push (_t0) ;
@@ -746,7 +751,7 @@
         REAL_TYPE _bh, _bl, _t1, _t0 , _ss, _hx, _qq;
         one_split(_bb, _bh, _bl);
 
-        _hh._xlen = +0 ;        
+        _hh._xlen = +0 ;
 
         one_one_mul_full(
             _ee[ 0 ], _bb, _bh, _bl, _qq, _hx) ;
@@ -756,7 +761,7 @@
         INDX_TYPE _ei;
         for (_ei = +1; _ei < _ee._xlen; ++_ei)
         {
-            one_one_mul_full(_ee[_ei], _bb, _bh, _bl, 
+            one_one_mul_full(_ee[_ei], _bb, _bh, _bl,
                 _t1, _t0) ;
 
             one_one_add_full(
@@ -784,10 +789,10 @@
         expansion <NC> & _cc
         ) // adapted from:     scale_expansion_zeroelim
     {
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _NN = (+2 * _aa._size) + 0 ;
 
-        static_assert( _cc._size >= _NN, 
+        static_assert( _cc._size >= _NN,
             "expansion-mul: insufficient alloc.!");
 
         if (_aa._xlen == +1)        // 1-to-1 unrolling
@@ -839,7 +844,7 @@
         expansion <NA> const& _aa ,
         expansion <NB> const& _bb ,
         INDX_TYPE _i1, INDX_TYPE _i2 ,
-        expansion <NC> & _cc        
+        expansion <NC> & _cc
         ) // see shewchuk:    block-wise "distillation"
     {
         INDX_TYPE _nr = _i2 - _i1 + 1;
@@ -848,19 +853,19 @@
             if constexpr ( NR >= +3 )
             {
             INDX_TYPE _im = _i1 + _nr/+2 ;
-    
+
             INDX_TYPE constexpr R1 = NR / +2;
             INDX_TYPE constexpr R2 = NR - R1;
 
-            INDX_TYPE constexpr 
+            INDX_TYPE constexpr
                 N1 = R1 * _aa._size * +2 ;
-            INDX_TYPE constexpr 
-                N2 = R2 * _aa._size * +2 ;            
+            INDX_TYPE constexpr
+                N2 = R2 * _aa._size * +2 ;
 
             expansion<N1> _c1;
             expansion_mul<NA, NB, N1, R1>(
                 _aa, _bb, _i1, _im - 1, _c1);
-            
+
             expansion<N2> _c2;
             expansion_mul<NA, NB, N2, R2>(
                 _aa, _bb, _im + 0, _i2, _c2);
@@ -869,7 +874,7 @@
             }
             else
             {
-            assert( false && 
+            assert( false &&
                 "expansion-mul: distill fail");
             }
         }
@@ -888,7 +893,7 @@
             }
             else
             {
-            assert( false && 
+            assert( false &&
                 "expansion-mul: distill fail");
             }
         }
@@ -905,7 +910,7 @@
     __inline_call void      expansion_mul (
         expansion <NA> const& _aa ,
         expansion <NB> const& _bb ,
-        expansion <NC> & _cc        
+        expansion <NC> & _cc
         ) // see shewchuk:    block-wise "distillation"
     {
         if (_aa._xlen < _bb._xlen)

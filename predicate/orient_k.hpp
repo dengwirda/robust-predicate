@@ -49,7 +49,7 @@
      *
      * Compute an exact determinant using multi-precision
      * expansions, a'la shewchuk
-     * 
+     *
      *   | ax  ay  +1. |
      *   | bx  by  +1. |
      *   | cx  cy  +1. |
@@ -104,7 +104,7 @@
     {
     /*--------------- orient2d predicate, "float" version */
         REAL_TYPE static const _ER =
-        +  3. * std::pow(mp::_epsilon, 1) + 
+        +  3. * std::pow(mp::_epsilon, 1) +
         + 16. * std::pow(mp::_epsilon, 2) ;
 
         REAL_TYPE _acx, _acy ;
@@ -115,7 +115,7 @@
 
         _acx = _pa [0] - _pc [0] ;        // coord. diff.
         _acy = _pa [1] - _pc [1] ;
-        
+
         _bcx = _pb [0] - _pc [0] ;
         _bcy = _pb [1] - _pc [1] ;
 
@@ -136,7 +136,7 @@
      *
      * Compute an exact determinant using multi-precision
      * expansions, a'la shewchuk
-     * 
+     *
      *   | ax  ay  az  +1. |
      *   | bx  by  bz  +1. |
      *   | cx  cy  cz  +1. |
@@ -166,7 +166,7 @@
 
         _FT = (REAL_TYPE) +0.0E+00;
 
-        mp::expansion< 1 > _pa_zz_(_pa[ 2]); 
+        mp::expansion< 1 > _pa_zz_(_pa[ 2]);
         mp::expansion< 1 > _pb_zz_(_pb[ 2]);
         mp::expansion< 1 > _pc_zz_(_pc[ 2]);
         mp::expansion< 1 > _pd_zz_(_pd[ 2]);
@@ -214,7 +214,7 @@
                         _d3_abc, +3) ;
 
     /*-------------------------------------- 4 x 4 result */
-        compute_det_4x4(_d3_bcd, _pa_zz_, 
+        compute_det_4x4(_d3_bcd, _pa_zz_,
                         _d3_acd, _pb_zz_,
                         _d3_abd, _pc_zz_,
                         _d3_abc, _pd_zz_,
@@ -233,14 +233,14 @@
         )
     {
     /*--------------- orient3d predicate, "float" version */
-        REAL_TYPE static const _ER = 
-        +  7. * std::pow(mp::_epsilon, 1) + 
+        REAL_TYPE static const _ER =
+        +  7. * std::pow(mp::_epsilon, 1) +
         + 56. * std::pow(mp::_epsilon, 2) ;
 
         REAL_TYPE _adx, _ady, _adz ,
-                  _bdx, _bdy, _bdz , 
+                  _bdx, _bdy, _bdz ,
                   _cdx, _cdy, _cdz ;
-        REAL_TYPE _bdxcdy, _cdxbdy , 
+        REAL_TYPE _bdxcdy, _cdxbdy ,
                   _cdxady, _adxcdy ,
                   _adxbdy, _bdxady ;
 
@@ -252,13 +252,13 @@
         _adx = _pa [0] - _pd [0] ;        // coord. diff.
         _ady = _pa [1] - _pd [1] ;
         _adz = _pa [2] - _pd [2] ;
-        
+
         _ADZ = std::abs (_adz) ;
 
         _bdx = _pb [0] - _pd [0] ;
         _bdy = _pb [1] - _pd [1] ;
         _bdz = _pb [2] - _pd [2] ;
-        
+
         _BDZ = std::abs (_bdz) ;
 
         _cdx = _pc [0] - _pd [0] ;
@@ -273,7 +273,7 @@
         _adxcdy = _adx * _cdy ;
         _adxbdy = _adx * _bdy ;
         _bdxady = _bdx * _ady ;
-  
+
         _BDXCDY = std::abs (_bdxcdy) ;
         _CDXBDY = std::abs (_cdxbdy) ;
         _CDXADY = std::abs (_cdxady) ;

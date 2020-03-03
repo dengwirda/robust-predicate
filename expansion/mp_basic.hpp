@@ -79,14 +79,14 @@
     {
     /*-------------- find machine eps, etc, a'la shewchuk */
         INDX_TYPE _alternate = +1 ;
-        REAL_TYPE _lastcheck ;        
+        REAL_TYPE _lastcheck ;
         REAL_TYPE _halve = +0.5;
         REAL_TYPE _check = +1.0;
 
     /*-------------- find eps: bisect until 1. + eps ~ 1. */
 
         _epsilon = _splitter = +1.00 ;
-  
+
         do {
             _lastcheck = _check;
             _epsilon  *= _halve;
@@ -97,8 +97,8 @@
             _alternate = !_alternate ;
 
             _check = 1.00 + _epsilon ;
-        } 
-        while (_check != +1.00 && 
+        }
+        while (_check != +1.00 &&
                _check != _lastcheck) ;
 
         _splitter += 1.00 ;
@@ -111,36 +111,36 @@
      */
 
     __inline_call void one_one_add_fast (
-        REAL_TYPE  _aa, REAL_TYPE  _bb, 
+        REAL_TYPE  _aa, REAL_TYPE  _bb,
         REAL_TYPE &_x1, REAL_TYPE &_x0
         )
     {
         REAL_TYPE _bvirt;
         _x1 = _aa + _bb;
-        _bvirt = _x1 - _aa; 
+        _bvirt = _x1 - _aa;
         _x0 = _bb - _bvirt;
     }
 
     __inline_call void one_one_add_full (
-        REAL_TYPE  _aa, REAL_TYPE  _bb, 
-        REAL_TYPE &_x1, REAL_TYPE &_x0        
+        REAL_TYPE  _aa, REAL_TYPE  _bb,
+        REAL_TYPE &_x1, REAL_TYPE &_x0
         )
     {
         REAL_TYPE _bvirt, _avirt;
         _x1 = _aa + _bb;
         _bvirt = _x1 - _aa;
         _avirt = _x1 - _bvirt;
-        
+
         REAL_TYPE _bround, _around;
         _bround = _bb - _bvirt;
         _around = _aa - _avirt;
         _x0 = _around + _bround;
     }
-    
+
     __inline_call void two_one_add_full (
-        REAL_TYPE  _a1, REAL_TYPE  _a0, 
+        REAL_TYPE  _a1, REAL_TYPE  _a0,
         REAL_TYPE  _bb,
-        REAL_TYPE &_x2, REAL_TYPE &_x1, 
+        REAL_TYPE &_x2, REAL_TYPE &_x1,
         REAL_TYPE &_x0
         )
     {
@@ -152,7 +152,7 @@
     }
 
     __inline_call void two_one_add_fast (   // dd_flt
-        REAL_TYPE  _a1, REAL_TYPE  _a0, 
+        REAL_TYPE  _a1, REAL_TYPE  _a0,
         REAL_TYPE  _bb,
         REAL_TYPE &_x1, REAL_TYPE &_x0
         )
@@ -168,23 +168,23 @@
     }
 
     __inline_call void two_two_add_full (
-        REAL_TYPE  _a1, REAL_TYPE  _a0, 
+        REAL_TYPE  _a1, REAL_TYPE  _a0,
         REAL_TYPE  _b1, REAL_TYPE  _b0,
-        REAL_TYPE &_x3, REAL_TYPE &_x2, 
+        REAL_TYPE &_x3, REAL_TYPE &_x2,
         REAL_TYPE &_x1, REAL_TYPE &_x0
         )
     {
         REAL_TYPE _t1, _t0 ;
-        two_one_add_full(_a1, _a0, _b0, _t1, 
+        two_one_add_full(_a1, _a0, _b0, _t1,
             _t0, _x0
-            ) ;     
-        two_one_add_full(_t1, _t0, _b1, _x3, 
+            ) ;
+        two_one_add_full(_t1, _t0, _b1, _x3,
             _x2, _x1
             ) ;
     }
 
     __inline_call void two_two_add_fast (   // dd_flt
-        REAL_TYPE  _a1, REAL_TYPE  _a0, 
+        REAL_TYPE  _a1, REAL_TYPE  _a0,
         REAL_TYPE  _b1, REAL_TYPE  _b0,
         REAL_TYPE &_x1, REAL_TYPE &_x0
         )
@@ -215,18 +215,18 @@
      */
 
     __inline_call void one_one_sub_fast (
-        REAL_TYPE  _aa, REAL_TYPE  _bb, 
-        REAL_TYPE &_x1, REAL_TYPE &_x0        
+        REAL_TYPE  _aa, REAL_TYPE  _bb,
+        REAL_TYPE &_x1, REAL_TYPE &_x0
         )
     {
         REAL_TYPE _bvirt;
         _x1 = _aa - _bb;
-        _bvirt = _aa - _x1; 
+        _bvirt = _aa - _x1;
         _x0 = _bvirt - _bb;
     }
 
     __inline_call void one_one_sub_full (
-        REAL_TYPE  _aa, REAL_TYPE  _bb, 
+        REAL_TYPE  _aa, REAL_TYPE  _bb,
         REAL_TYPE &_x1, REAL_TYPE &_x0
         )
     {
@@ -234,7 +234,7 @@
         _x1 = _aa - _bb;
         _bvirt = _aa - _x1;
         _avirt = _x1 + _bvirt;
-        
+
         REAL_TYPE _bround, _around;
         _bround = _bvirt - _bb;
         _around = _aa - _avirt;
@@ -242,9 +242,9 @@
     }
 
     __inline_call void two_one_sub_full (
-        REAL_TYPE  _a1, REAL_TYPE  _a0, 
+        REAL_TYPE  _a1, REAL_TYPE  _a0,
         REAL_TYPE  _bb,
-        REAL_TYPE &_x2, REAL_TYPE &_x1, 
+        REAL_TYPE &_x2, REAL_TYPE &_x1,
         REAL_TYPE &_x0
         )
     {
@@ -256,7 +256,7 @@
     }
 
     __inline_call void two_one_sub_fast (   // dd_flt
-        REAL_TYPE  _a1, REAL_TYPE  _a0, 
+        REAL_TYPE  _a1, REAL_TYPE  _a0,
         REAL_TYPE  _bb,
         REAL_TYPE &_x1, REAL_TYPE &_x0
         )
@@ -272,23 +272,23 @@
     }
 
     __inline_call void two_two_sub_full (
-        REAL_TYPE  _a1, REAL_TYPE  _a0, 
+        REAL_TYPE  _a1, REAL_TYPE  _a0,
         REAL_TYPE  _b1, REAL_TYPE  _b0,
-        REAL_TYPE &_x3, REAL_TYPE &_x2, 
+        REAL_TYPE &_x3, REAL_TYPE &_x2,
         REAL_TYPE &_x1, REAL_TYPE &_x0
         )
     {
         REAL_TYPE _t1, _t0 ;
-        two_one_sub_full(_a1, _a0, _b0, _t1, 
+        two_one_sub_full(_a1, _a0, _b0, _t1,
             _t0, _x0
             ) ;
-        two_one_sub_full(_t1, _t0, _b1, _x3, 
+        two_one_sub_full(_t1, _t0, _b1, _x3,
             _x2, _x1
             ) ;
     }
 
     __inline_call void two_two_sub_fast (   // dd_flt
-        REAL_TYPE  _a1, REAL_TYPE  _a0, 
+        REAL_TYPE  _a1, REAL_TYPE  _a0,
         REAL_TYPE  _b1, REAL_TYPE  _b0,
         REAL_TYPE &_x1, REAL_TYPE &_x0
         )
@@ -319,7 +319,7 @@
      */
 
     __inline_call void one_split (
-        REAL_TYPE  _aa, 
+        REAL_TYPE  _aa,
         REAL_TYPE &_x1, REAL_TYPE &_x0
         )
     {
@@ -331,7 +331,7 @@
     }
 
     __inline_call void one_one_mul_full (
-        REAL_TYPE  _aa, REAL_TYPE  _bb, 
+        REAL_TYPE  _aa, REAL_TYPE  _bb,
         REAL_TYPE &_x1, REAL_TYPE &_x0
         )
     {
@@ -340,7 +340,7 @@
         one_split (_aa, _ah, _al);
         one_split (_bb, _bh, _bl);
 
-        REAL_TYPE _err1, _err2, _err3;        
+        REAL_TYPE _err1, _err2, _err3;
         _err1 = _x1 - (_ah * _bh);
         _err2 = _err1 - (_al * _bh);
         _err3 = _err2 - (_ah * _bl);
@@ -348,8 +348,8 @@
     }
 
     __inline_call void one_one_mul_full (
-        REAL_TYPE  _aa, 
-        REAL_TYPE  _bb, REAL_TYPE  _bh, 
+        REAL_TYPE  _aa,
+        REAL_TYPE  _bb, REAL_TYPE  _bh,
         REAL_TYPE  _bl,
         REAL_TYPE &_x1, REAL_TYPE &_x0
         )
@@ -366,15 +366,15 @@
     }
 
     __inline_call void one_one_mul_full (
-        REAL_TYPE  _aa, REAL_TYPE  _ah, 
-        REAL_TYPE  _al, 
-        REAL_TYPE  _bb, REAL_TYPE  _bh, 
+        REAL_TYPE  _aa, REAL_TYPE  _ah,
+        REAL_TYPE  _al,
+        REAL_TYPE  _bb, REAL_TYPE  _bh,
         REAL_TYPE  _bl,
         REAL_TYPE &_x1, REAL_TYPE &_x0
         )
     {
         _x1 = _aa * _bb;
-        
+
         REAL_TYPE _err1, _err2, _err3;
         _err1 = _x1 - (_ah * _bh);
         _err2 = _err1 - (_al * _bh);
@@ -384,11 +384,11 @@
 
     __inline_call void one_square_full (
         REAL_TYPE  _aa,
-        REAL_TYPE &_x1, REAL_TYPE &_x0        
+        REAL_TYPE &_x1, REAL_TYPE &_x0
         )
     {
         REAL_TYPE _ah, _al;
-        _x1 = _aa * _aa; 
+        _x1 = _aa * _aa;
         one_split (_aa, _ah, _al);
 
         REAL_TYPE _err1, _err3;
@@ -398,13 +398,13 @@
     }
 
     __inline_call void one_square_full (
-        REAL_TYPE  _aa, REAL_TYPE  _ah, 
+        REAL_TYPE  _aa, REAL_TYPE  _ah,
         REAL_TYPE  _al,
-        REAL_TYPE &_x1, REAL_TYPE &_x0        
+        REAL_TYPE &_x1, REAL_TYPE &_x0
         )
     {
-        _x1 = _aa * _aa; 
-        
+        _x1 = _aa * _aa;
+
         REAL_TYPE _err1, _err3;
         _err1 = _x1 - (_ah * _ah);
         _err3 = _err1 - ((_ah + _ah) * _al);
@@ -414,18 +414,18 @@
     __inline_call void two_one_mul_full (
         REAL_TYPE  _a1, REAL_TYPE  _a0,
         REAL_TYPE  _bb,
-        REAL_TYPE &_x3, REAL_TYPE &_x2, 
+        REAL_TYPE &_x3, REAL_TYPE &_x2,
         REAL_TYPE &_x1, REAL_TYPE &_x0
         )
     {
-        REAL_TYPE _bh, _bl; 
+        REAL_TYPE _bh, _bl;
         REAL_TYPE _t0, _t1, _t2, _t3 ;
         one_split(_bb, _bh, _bl) ;
 
-        one_one_mul_full(_a0, _bb, _bh, _bl, 
+        one_one_mul_full(_a0, _bb, _bh, _bl,
             _t2, _x0
             ) ;
-        one_one_mul_full(_a1, _bb, _bh, _bl, 
+        one_one_mul_full(_a1, _bb, _bh, _bl,
             _t1, _t0
             ) ;
 
@@ -509,7 +509,6 @@
 
         _x1 = _t1 ; _x0 = _t0 ;
     }
-
 
 #   undef REAL_TYPE
 #   undef INDX_TYPE

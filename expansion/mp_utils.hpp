@@ -59,7 +59,7 @@
     __inline_call void compute_det_2x2 (
         REAL_TYPE _aa, REAL_TYPE _bb ,
         REAL_TYPE _cc, REAL_TYPE _dd ,
-        expansion <NN> & _final        
+        expansion <NN> & _final
         )
     {
         expansion< 2 >_mulad, _mulbc ;
@@ -78,7 +78,7 @@
      *   | b1  b2  v2 |
      *   | c1  c2  v3 |
      *
-     * as the product of 2 x 2 minors about a pivot column 
+     * as the product of 2 x 2 minors about a pivot column
      * P, shown here for P = 3. The entry V1 is associated
      * with the minor
      *
@@ -91,7 +91,7 @@
      */
 
     template <
-        size_t NA, size_t NB, size_t NC, 
+        size_t NA, size_t NB, size_t NC,
         size_t ND, size_t NE, size_t NF,
         size_t NG
              >
@@ -107,23 +107,23 @@
         )
     {
     /*---------------------------------- products Vi * Di */
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _NN1P = mul_alloc(_det1p, _val1p);
         expansion<_NN1P> _mul1p;
         expansion_mul(_det1p, _val1p, _mul1p);
 
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _NN2P = mul_alloc(_det2p, _val2p);
         expansion<_NN2P> _mul2p;
         expansion_mul(_det2p, _val2p, _mul2p);
 
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _NN3P = mul_alloc(_det3p, _val3p);
         expansion<_NN3P> _mul3p;
         expansion_mul(_det3p, _val3p, _mul3p);
 
     /*---------------------------------- sum (-1)^P * VDi */
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _NSUM = sub_alloc(_mul1p, _mul2p);
         expansion<_NSUM> _sum_1;
 
@@ -142,7 +142,7 @@
     /*--------------------- "unitary" case, with Vi = +1. */
 
     template <
-        size_t NA, size_t NB, size_t NC, 
+        size_t NA, size_t NB, size_t NC,
         size_t ND
              >
     __inline_call void unitary_det_3x3 (
@@ -153,7 +153,7 @@
         INDX_TYPE        _pivot
         )
     {
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _NSUM = sub_alloc(_det1p, _det2p);
         expansion<_NSUM> _sum_1;
 
@@ -179,7 +179,7 @@
      *   | c1  c2  c3  v3 |
      *   | d1  d2  d3  v4 |
      *
-     * as the product of 3 x 3 minors about a pivot column 
+     * as the product of 3 x 3 minors about a pivot column
      * P, shown here for P = 4. The entry V1 is associated
      * with the minor
      *
@@ -193,7 +193,7 @@
      */
 
     template <
-        size_t NA, size_t NB, size_t NC, 
+        size_t NA, size_t NB, size_t NC,
         size_t ND, size_t NE, size_t NF,
         size_t NG, size_t NH, size_t NI
              >
@@ -211,32 +211,32 @@
         )
     {
     /*---------------------------------- products Vi * Di */
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _NN1P = mul_alloc(_det1p, _val1p);
         expansion<_NN1P> _mul1p;
         expansion_mul(_det1p, _val1p, _mul1p);
 
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _NN2P = mul_alloc(_det2p, _val2p);
         expansion<_NN2P> _mul2p;
         expansion_mul(_det2p, _val2p, _mul2p);
 
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _NN3P = mul_alloc(_det3p, _val3p);
         expansion<_NN3P> _mul3p;
         expansion_mul(_det3p, _val3p, _mul3p);
 
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _NN4P = mul_alloc(_det4p, _val4p);
         expansion<_NN4P> _mul4p;
         expansion_mul(_det4p, _val4p, _mul4p);
 
     /*---------------------------------- sum (-1)^P * VDi */
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _SUM1 = sub_alloc(_mul1p, _mul2p);
         expansion<_SUM1> _sum_1;
-        
-        INDX_TYPE constexpr 
+
+        INDX_TYPE constexpr
             _SUM2 = sub_alloc(_mul3p, _mul4p);
         expansion<_SUM2> _sum_2;
 
@@ -257,7 +257,7 @@
     /*--------------------- "unitary" case, with Vi = +1. */
 
     template <
-        size_t NA, size_t NB, size_t NC, 
+        size_t NA, size_t NB, size_t NC,
         size_t ND, size_t NE
              >
     __inline_call void unitary_det_4x4 (
@@ -269,11 +269,11 @@
         INDX_TYPE        _pivot
         )
     {
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _SUM1 = sub_alloc(_det1p, _det2p);
         expansion<_SUM1> _sum_1;
-        
-        INDX_TYPE constexpr 
+
+        INDX_TYPE constexpr
             _SUM2 = sub_alloc(_det3p, _det4p);
         expansion<_SUM2> _sum_2;
 
@@ -302,7 +302,7 @@
      *   | d1  d2  d3  d4  v4 |
      *   | e1  e2  e3  e4  v5 |
      *
-     * as the product of 4 x 4 minors about a pivot column 
+     * as the product of 4 x 4 minors about a pivot column
      * P, shown here for P = 5. The entry V1 is associated
      * with the minor
      *
@@ -317,7 +317,7 @@
      */
 
     template <
-        size_t NA, size_t NB, size_t NC, 
+        size_t NA, size_t NB, size_t NC,
         size_t ND, size_t NE, size_t NF,
         size_t NG, size_t NH, size_t NI,
         size_t NJ, size_t NK
@@ -338,41 +338,41 @@
         )
     {
     /*---------------------------------- products Vi * Di */
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _NN1P = mul_alloc(_det1p, _val1p);
         expansion<_NN1P> _mul1p;
         expansion_mul(_det1p, _val1p, _mul1p);
 
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _NN2P = mul_alloc(_det2p, _val2p);
         expansion<_NN2P> _mul2p;
         expansion_mul(_det2p, _val2p, _mul2p);
 
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _NN3P = mul_alloc(_det3p, _val3p);
         expansion<_NN3P> _mul3p;
         expansion_mul(_det3p, _val3p, _mul3p);
 
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _NN4P = mul_alloc(_det4p, _val4p);
         expansion<_NN4P> _mul4p;
         expansion_mul(_det4p, _val4p, _mul4p);
 
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _NN5P = mul_alloc(_det5p, _val5p);
         expansion<_NN5P> _mul5p;
         expansion_mul(_det5p, _val5p, _mul5p);
 
     /*---------------------------------- sum (-1)^P * VDi */
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _SUM1 = sub_alloc(_mul1p, _mul2p);
         expansion<_SUM1> _sum_1;
-        
-        INDX_TYPE constexpr 
+
+        INDX_TYPE constexpr
             _SUM2 = sub_alloc(_mul3p, _mul4p);
         expansion<_SUM2> _sum_2;
-        
-        INDX_TYPE constexpr 
+
+        INDX_TYPE constexpr
             _SUM3 = sub_alloc(_sum_1, _mul5p);
         expansion<_SUM3> _sum_3;
 
@@ -385,7 +385,7 @@
         else
         {
         expansion_sub(_mul1p, _mul2p, _sum_1);
-        expansion_sub(_mul3p, _mul4p, _sum_2);        
+        expansion_sub(_mul3p, _mul4p, _sum_2);
         expansion_add(_sum_1, _mul5p, _sum_3);
         }
 
@@ -395,7 +395,7 @@
     /*--------------------- "unitary" case, with Vi = +1. */
 
     template <
-        size_t NA, size_t NB, size_t NC, 
+        size_t NA, size_t NB, size_t NC,
         size_t ND, size_t NE, size_t NF
              >
     __inline_call void unitary_det_5x5 (
@@ -408,15 +408,15 @@
         INDX_TYPE        _pivot
         )
     {
-        INDX_TYPE constexpr 
+        INDX_TYPE constexpr
             _SUM1 = sub_alloc(_det1p, _det2p);
         expansion<_SUM1> _sum_1;
-        
-        INDX_TYPE constexpr 
+
+        INDX_TYPE constexpr
             _SUM2 = sub_alloc(_det3p, _det4p);
         expansion<_SUM2> _sum_2;
-        
-        INDX_TYPE constexpr 
+
+        INDX_TYPE constexpr
             _SUM3 = sub_alloc(_sum_1, _det5p);
         expansion<_SUM3> _sum_3;
 
@@ -429,7 +429,7 @@
         else
         {
         expansion_sub(_det1p, _det2p, _sum_1);
-        expansion_sub(_det3p, _det4p, _sum_2);        
+        expansion_sub(_det3p, _det4p, _sum_2);
         expansion_add(_sum_1, _det5p, _sum_3);
         }
 

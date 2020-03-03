@@ -112,7 +112,7 @@
     indx_type static constexpr _xlen = 2 ;
 
     real_type                  _xdat [ 2 ] ;
-    
+
     public  :
 /*------------------------------ access to expansion bits */
     __inline_call real_type&      hi (
@@ -141,7 +141,7 @@
     {   this->_xdat[0] = _lo ;
         this->_xdat[1] = _hi ;
     }
-    
+
     __inline_call dd_flt (                  // copy c'tor
         dd_flt const& _aa
         )
@@ -274,7 +274,7 @@
         )
     {
         dd_flt _tt = *this / _aa ;
-        
+
         hi() = _tt.hi();
         lo() = _tt.lo();
 
@@ -285,7 +285,7 @@
 
     /*
     --------------------------------------------------------
-     * double-double a + b operators 
+     * double-double a + b operators
     --------------------------------------------------------
      */
 
@@ -296,7 +296,7 @@
     {
         REAL_TYPE _x0, _x1;
         mp_float::two_one_add_fast(
-            _aa.hi(), _aa.lo(), _bb, _x1, _x0 
+            _aa.hi(), _aa.lo(), _bb, _x1, _x0
             ) ;
 
         return ( dd_flt(_x1, _x0) ) ;
@@ -325,7 +325,7 @@
 
     /*
     --------------------------------------------------------
-     * double-double a - b operators 
+     * double-double a - b operators
     --------------------------------------------------------
      */
 
@@ -358,7 +358,7 @@
 
     /*
     --------------------------------------------------------
-     * double-double a * b operators 
+     * double-double a * b operators
     --------------------------------------------------------
      */
 
@@ -398,7 +398,7 @@
 
     /*
     --------------------------------------------------------
-     * double-double a / b operators 
+     * double-double a / b operators
     --------------------------------------------------------
      */
 
@@ -432,7 +432,7 @@
 
     /*
     --------------------------------------------------------
-     * double-double equal operators 
+     * double-double equal operators
     --------------------------------------------------------
      */
 
