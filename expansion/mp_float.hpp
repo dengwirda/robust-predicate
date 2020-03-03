@@ -55,7 +55,7 @@
      *
     --------------------------------------------------------
      *
-     * Last updated: 01 March, 2020
+     * Last updated: 02 March, 2020
      *
      * Copyright 2020--
      * Darren Engwirda
@@ -262,6 +262,26 @@
     --------------------------------------------------------
      */
 
+#   if defined(_MSC_VER)
+
+    // unfortunately, msvc doesn't seem to evaluate the
+    // constexpr functions correctly...
+
+    // use a macro-based work-around...
+
+#   define add_alloc(_aa, _bb) \
+        (_aa._size + _bb._size)
+
+#   define sub_alloc(_aa, _bb) \
+        (_aa._size + _bb._size)
+
+#   define mul_alloc(_aa, _bb) \
+        (_aa._size * _bb._size * 2)
+
+#   else
+
+    // this seems to work fine with g++, with >= c++11x
+
     template <
         size_t NA, size_t NB
              >
@@ -294,6 +314,7 @@
     {
         return _aa._size * _bb._size * +2 ;
     }
+#   endif   // msvc
 
     /*
     --------------------------------------------------------
