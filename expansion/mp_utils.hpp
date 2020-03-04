@@ -31,7 +31,7 @@
      *
     --------------------------------------------------------
      *
-     * Last updated: 01 March, 2020
+     * Last updated: 03 March, 2020
      *
      * Copyright 2020--
      * Darren Engwirda
@@ -107,25 +107,25 @@
         )
     {
     /*---------------------------------- products Vi * Di */
-        INDX_TYPE constexpr
-            _NN1P = mul_alloc(_det1p, _val1p);
-        expansion<_NN1P> _mul1p;
+        INDX_TYPE 
+        constexpr N1 = mul_alloc (NA, NB) ;
+        expansion<N1> _mul1p;
         expansion_mul(_det1p, _val1p, _mul1p);
 
-        INDX_TYPE constexpr
-            _NN2P = mul_alloc(_det2p, _val2p);
-        expansion<_NN2P> _mul2p;
+        INDX_TYPE 
+        constexpr N2 = mul_alloc (NC, ND) ;
+        expansion<N2> _mul2p;
         expansion_mul(_det2p, _val2p, _mul2p);
 
-        INDX_TYPE constexpr
-            _NN3P = mul_alloc(_det3p, _val3p);
-        expansion<_NN3P> _mul3p;
+        INDX_TYPE 
+        constexpr N3 = mul_alloc (NE, NF) ;
+        expansion<N3> _mul3p;
         expansion_mul(_det3p, _val3p, _mul3p);
 
     /*---------------------------------- sum (-1)^P * VDi */
-        INDX_TYPE constexpr
-            _NSUM = sub_alloc(_mul1p, _mul2p);
-        expansion<_NSUM> _sum_1;
+        INDX_TYPE 
+        constexpr MM = sub_alloc (N1, N2) ;
+        expansion<MM> _sum_1;
 
         if (_pivot % 2 == +0)
         {
@@ -153,9 +153,9 @@
         INDX_TYPE        _pivot
         )
     {
-        INDX_TYPE constexpr
-            _NSUM = sub_alloc(_det1p, _det2p);
-        expansion<_NSUM> _sum_1;
+        INDX_TYPE 
+        constexpr MM = sub_alloc (NA, NB) ;
+        expansion<MM> _sum_1;
 
         if (_pivot % 2 == +0)
         {
@@ -211,34 +211,34 @@
         )
     {
     /*---------------------------------- products Vi * Di */
-        INDX_TYPE constexpr
-            _NN1P = mul_alloc(_det1p, _val1p);
-        expansion<_NN1P> _mul1p;
+        INDX_TYPE 
+        constexpr N1 = mul_alloc (NA, NB) ;
+        expansion<N1> _mul1p;
         expansion_mul(_det1p, _val1p, _mul1p);
 
-        INDX_TYPE constexpr
-            _NN2P = mul_alloc(_det2p, _val2p);
-        expansion<_NN2P> _mul2p;
+        INDX_TYPE 
+        constexpr N2 = mul_alloc (NC, ND) ;
+        expansion<N2> _mul2p;
         expansion_mul(_det2p, _val2p, _mul2p);
 
-        INDX_TYPE constexpr
-            _NN3P = mul_alloc(_det3p, _val3p);
-        expansion<_NN3P> _mul3p;
+        INDX_TYPE 
+        constexpr N3 = mul_alloc (NE, NF) ;
+        expansion<N3> _mul3p;
         expansion_mul(_det3p, _val3p, _mul3p);
 
-        INDX_TYPE constexpr
-            _NN4P = mul_alloc(_det4p, _val4p);
-        expansion<_NN4P> _mul4p;
+        INDX_TYPE 
+        constexpr N4 = mul_alloc (NG, NH) ;
+        expansion<N4> _mul4p;
         expansion_mul(_det4p, _val4p, _mul4p);
 
     /*---------------------------------- sum (-1)^P * VDi */
-        INDX_TYPE constexpr
-            _SUM1 = sub_alloc(_mul1p, _mul2p);
-        expansion<_SUM1> _sum_1;
+        INDX_TYPE 
+        constexpr M1 = sub_alloc (N1, N2) ;
+        expansion<M1> _sum_1;
 
-        INDX_TYPE constexpr
-            _SUM2 = sub_alloc(_mul3p, _mul4p);
-        expansion<_SUM2> _sum_2;
+        INDX_TYPE 
+        constexpr M2 = sub_alloc (N3, N4) ;
+        expansion<M2> _sum_2;
 
         if (_pivot % 2 == +0)
         {
@@ -269,13 +269,13 @@
         INDX_TYPE        _pivot
         )
     {
-        INDX_TYPE constexpr
-            _SUM1 = sub_alloc(_det1p, _det2p);
-        expansion<_SUM1> _sum_1;
+        INDX_TYPE 
+        constexpr M1 = sub_alloc (NA, NB) ;
+        expansion<M1> _sum_1;
 
-        INDX_TYPE constexpr
-            _SUM2 = sub_alloc(_det3p, _det4p);
-        expansion<_SUM2> _sum_2;
+        INDX_TYPE 
+        constexpr M2 = sub_alloc (NC, ND) ;
+        expansion<M2> _sum_2;
 
         if (_pivot % 2 == +0)
         {
@@ -338,43 +338,43 @@
         )
     {
     /*---------------------------------- products Vi * Di */
-        INDX_TYPE constexpr
-            _NN1P = mul_alloc(_det1p, _val1p);
-        expansion<_NN1P> _mul1p;
+        INDX_TYPE 
+        constexpr N1 = mul_alloc (NA, NB) ;
+        expansion<N1> _mul1p;
         expansion_mul(_det1p, _val1p, _mul1p);
 
-        INDX_TYPE constexpr
-            _NN2P = mul_alloc(_det2p, _val2p);
-        expansion<_NN2P> _mul2p;
+        INDX_TYPE 
+        constexpr N2 = mul_alloc (NC, ND) ;
+        expansion<N2> _mul2p;
         expansion_mul(_det2p, _val2p, _mul2p);
 
-        INDX_TYPE constexpr
-            _NN3P = mul_alloc(_det3p, _val3p);
-        expansion<_NN3P> _mul3p;
+        INDX_TYPE 
+        constexpr N3 = mul_alloc (NE, NF) ;
+        expansion<N3> _mul3p;
         expansion_mul(_det3p, _val3p, _mul3p);
 
-        INDX_TYPE constexpr
-            _NN4P = mul_alloc(_det4p, _val4p);
-        expansion<_NN4P> _mul4p;
+        INDX_TYPE 
+        constexpr N4 = mul_alloc (NG, NH) ;
+        expansion<N4> _mul4p;
         expansion_mul(_det4p, _val4p, _mul4p);
 
-        INDX_TYPE constexpr
-            _NN5P = mul_alloc(_det5p, _val5p);
-        expansion<_NN5P> _mul5p;
+        INDX_TYPE 
+        constexpr N5 = mul_alloc (NI, NJ) ;
+        expansion<N5> _mul5p;
         expansion_mul(_det5p, _val5p, _mul5p);
 
     /*---------------------------------- sum (-1)^P * VDi */
-        INDX_TYPE constexpr
-            _SUM1 = sub_alloc(_mul1p, _mul2p);
-        expansion<_SUM1> _sum_1;
+        INDX_TYPE 
+        constexpr M1 = sub_alloc (N1, N2) ;
+        expansion<M1> _sum_1;
 
-        INDX_TYPE constexpr
-            _SUM2 = sub_alloc(_mul3p, _mul4p);
-        expansion<_SUM2> _sum_2;
+        INDX_TYPE 
+        constexpr M2 = sub_alloc (N3, N4) ;
+        expansion<M2> _sum_2;
 
-        INDX_TYPE constexpr
-            _SUM3 = sub_alloc(_sum_1, _mul5p);
-        expansion<_SUM3> _sum_3;
+        INDX_TYPE 
+        constexpr M3 = sub_alloc (M1, N5) ;
+        expansion<M3> _sum_3;
 
         if (_pivot % 2 == +0)
         {
@@ -408,17 +408,17 @@
         INDX_TYPE        _pivot
         )
     {
-        INDX_TYPE constexpr
-            _SUM1 = sub_alloc(_det1p, _det2p);
-        expansion<_SUM1> _sum_1;
+        INDX_TYPE 
+        constexpr N1 = sub_alloc (NA, NB) ;
+        expansion<N1> _sum_1;
 
-        INDX_TYPE constexpr
-            _SUM2 = sub_alloc(_det3p, _det4p);
-        expansion<_SUM2> _sum_2;
+        INDX_TYPE 
+        constexpr N2 = sub_alloc (NC, ND) ;
+        expansion<N2> _sum_2;
 
-        INDX_TYPE constexpr
-            _SUM3 = sub_alloc(_sum_1, _det5p);
-        expansion<_SUM3> _sum_3;
+        INDX_TYPE 
+        constexpr N3 = sub_alloc (N1, NE) ;
+        expansion<N3> _sum_3;
 
         if (_pivot % 2 == +0)
         {

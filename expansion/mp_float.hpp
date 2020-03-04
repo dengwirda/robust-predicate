@@ -157,7 +157,7 @@
         real_type  _aa, real_type  _bb
         )
     {
-        static_assert( this->_size >= +2,
+        static_assert( _size >= 2,
             "from-add: insufficient alloc.!") ;
 
         this->_xlen =  +2 ;
@@ -172,7 +172,7 @@
         real_type  _aa, real_type  _bb
         )
     {
-        static_assert( this->_size >= +2,
+        static_assert( _size >= 2,
             "from-sub: insufficient alloc.!") ;
 
         this->_xlen =  +2 ;
@@ -187,7 +187,7 @@
         real_type  _aa
         )
     {
-        static_assert( this->_size >= +2,
+        static_assert( _size >= 2,
             "from-sqr: insufficient alloc.!") ;
 
         this->_xlen =  +2 ;
@@ -202,7 +202,7 @@
         real_type  _aa, real_type  _bb
         )
     {
-        static_assert( this->_size >= +2,
+        static_assert( _size >= 2,
             "from-mul: insufficient alloc.!") ;
 
         this->_xlen =  +2 ;
@@ -262,64 +262,26 @@
     --------------------------------------------------------
      */
 
-#   define macro_workaround
-
-#   if defined(macro_workaround)
-
-    // unfortunately, msvc doesn't seem to evaluate the
-    // constexpr functions correctly...
-
-    // actually, seems to fail for various non-msvc too
-
-    // use a macro-based work-around...
-
-#   define add_alloc(_aa, _bb) \
-        (_aa._size + _bb._size)
-
-#   define sub_alloc(_aa, _bb) \
-        (_aa._size + _bb._size)
-
-#   define mul_alloc(_aa, _bb) \
-        (_aa._size * _bb._size * 2)
-
-#   else
-
-    // this seems to work fine with g++, with >= c++11x
-
-    template <
-        size_t NA, size_t NB
-             >
     __inline_call INDX_TYPE constexpr add_alloc (
-        expansion <NA> const& _aa ,
-        expansion <NB> const& _bb
+        INDX_TYPE _na,
+        INDX_TYPE _nb        
         )
-    {
-        return _aa._size + _bb._size;
+    {   return _na + _nb ;
     }
 
-    template <
-        size_t NA, size_t NB
-             >
     __inline_call INDX_TYPE constexpr sub_alloc (
-        expansion <NA> const& _aa ,
-        expansion <NB> const& _bb
+        INDX_TYPE _na,
+        INDX_TYPE _nb        
         )
-    {
-        return _aa._size + _bb._size;
+    {   return _na + _nb ;
     }
 
-    template <
-        size_t NA, size_t NB
-             >
     __inline_call INDX_TYPE constexpr mul_alloc (
-        expansion <NA> const& _aa ,
-        expansion <NB> const& _bb
+        INDX_TYPE _na,
+        INDX_TYPE _nb        
         )
-    {
-        return _aa._size * _bb._size * +2 ;
+    {   return _na * _nb * +2 ;
     }
-
-#   endif   //macro-workaround
 
     /*
     --------------------------------------------------------
@@ -424,10 +386,7 @@
         expansion <NC> & _cc
         ) // adapted from:  fast_expansion_sum_zeroelim
     {
-        INDX_TYPE constexpr
-            _NN = _aa._size + _bb._size;
-
-        static_assert( _cc._size >= _NN,
+        static_assert ( NC >= NA + NB ,
             "expansion-add: insufficient alloc.!");
 
         if (_aa._xlen == +1 &&      // 1-to-1 unrolling
@@ -603,10 +562,7 @@
         expansion <NC> & _cc
         ) // adapted from: fast_expansion_diff_zeroelim
     {
-        INDX_TYPE constexpr
-            _NN = _aa._size + _bb._size;
-
-        static_assert( _cc._size >= _NN,
+        static_assert ( NC >= NA + NB ,
             "expansion-sub: insufficient alloc.!");
 
         if (_aa._xlen == +1 &&      // 1-to-1 unrolling
@@ -706,10 +662,10 @@
         expansion <ND> & _dd
         )                           // 3-way add kernel
     {
-        expansion<add_alloc(_aa, _bb)> _ab;
-        expansion_add (_aa, _bb, _ab);
+        expansion<add_alloc(NA,  NB)> _ab ;
+        expansion_add(_aa, _bb, _ab);
 
-        expansion_add (_ab, _cc, _dd);
+        expansion_add(_ab, _cc, _dd);
     }
 
     template <
@@ -724,13 +680,13 @@
         expansion <NE> & _ee
         )                           // 4-way add kernel
     {
-        expansion<add_alloc(_aa, _bb)> _ab;
-        expansion_add (_aa, _bb, _ab);
+        expansion<add_alloc(NA,  NB)> _ab ;
+        expansion_add(_aa, _bb, _ab);
 
-        expansion<add_alloc(_cc, _dd)> _cd;
-        expansion_add (_cc, _dd, _cd);
+        expansion<add_alloc(NC,  ND)> _cd ;
+        expansion_add(_cc, _dd, _cd);
 
-        expansion_add (_ab, _cd, _ee);
+        expansion_add(_ab, _cd, _ee);
     }
 
     /*
@@ -784,15 +740,12 @@
         size_t NA, size_t NC
              >
     __inline_call void      expansion_mul (
-        expansion <NA> const& _aa,
+        expansion <NA> const& _aa ,
         REAL_TYPE _bb,
         expansion <NC> & _cc
         ) // adapted from:     scale_expansion_zeroelim
     {
-        INDX_TYPE constexpr
-            _NN = (+2 * _aa._size) + 0 ;
-
-        static_assert( _cc._size >= _NN,
+        static_assert ( NC >= NA * +2 ,
             "expansion-mul: insufficient alloc.!");
 
         if (_aa._xlen == +1)        // 1-to-1 unrolling
@@ -852,15 +805,15 @@
         {
             if constexpr ( NR >= +3 )
             {
-            INDX_TYPE _im = _i1 + _nr/+2 ;
+            INDX_TYPE _im = _i1 + _nr / 2 ;
 
-            INDX_TYPE constexpr R1 = NR / +2;
+            INDX_TYPE constexpr R1 = NR / 2 ;
             INDX_TYPE constexpr R2 = NR - R1;
 
             INDX_TYPE constexpr
-                N1 = R1 * _aa._size * +2 ;
+                N1 = mul_alloc (R1, NA) ;
             INDX_TYPE constexpr
-                N2 = R2 * _aa._size * +2 ;
+                N2 = mul_alloc (R2, NA) ;
 
             expansion<N1> _c1;
             expansion_mul<NA, NB, N1, R1>(
@@ -883,7 +836,8 @@
         {
             if constexpr ( NR >= +2 )
             {
-            expansion<_aa._size*2> _c1, _c2 ;
+            expansion<mul_alloc(NA, 1)> _c1 ;
+            expansion<mul_alloc(NA, 1)> _c2 ;
             expansion_mul(
                 _aa, _bb [_i1 + 0], _c1) ;
             expansion_mul(
