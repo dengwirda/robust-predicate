@@ -31,7 +31,7 @@
      *
     --------------------------------------------------------
      *
-     * Last updated: 01 March, 2020
+     * Last updated: 08 April, 2020
      *
      * Copyright 2020--
      * Darren Engwirda
@@ -104,8 +104,7 @@
     {
     /*--------------- orient2d predicate, "float" version */
         REAL_TYPE static const _ER =
-        +  3. * std::pow(mp::_epsilon, 1) +
-        + 16. * std::pow(mp::_epsilon, 2) ;
+        +  4. * std::pow(mp::_epsilon, 1) ;
 
         REAL_TYPE _acx, _acy ;
         REAL_TYPE _bcx, _bcy ;
@@ -234,8 +233,7 @@
     {
     /*--------------- orient3d predicate, "float" version */
         REAL_TYPE static const _ER =
-        +  7. * std::pow(mp::_epsilon, 1) +
-        + 56. * std::pow(mp::_epsilon, 2) ;
+        +  8. * std::pow(mp::_epsilon, 1) ;
 
         REAL_TYPE _adx, _ady, _adz ,
                   _bdx, _bdy, _bdz ,

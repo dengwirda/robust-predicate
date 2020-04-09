@@ -16,6 +16,17 @@
      * Point Arithmetic & Fast Robust Geometric Predicates
      * Discrete & Computational Geometry, 18, pp. 305-363.
      *
+     * A translational version of BFS semi-static filtering
+     * is employed, adapted from, e.g.
+     *
+     * C. Burnikel, S. Funke, and M. Seel (2001), Exact 
+     * geometric computation using cascading.
+     * IJCGA (Special issue) 11 (3), pp. 245–266.
+     *
+     * O. Devillers and S. Pion (2002), Efficient Exact 
+     * Geometric Predicates for Delaunay Triangulations.
+     * RR-4351, INRIA. inria-00072237
+     *
     --------------------------------------------------------
      *
      * This program may be freely redistributed under the
@@ -45,7 +56,7 @@
      *
     --------------------------------------------------------
      *
-     * Last updated: 01 March, 2020
+     * Last updated: 09 April, 2020
      *
      * Copyright 2020--
      * Darren Engwirda
@@ -68,7 +79,7 @@
     namespace mp=mp_float;
 
 #   include "orient_k.hpp"
-//  include "bisect_k.hpp"
+#   include "bisect_k.hpp"
 //  include "linear_k.hpp"
 #   include "inball_k.hpp"
 
@@ -86,6 +97,7 @@
             ) ;
 
         if (_rr > _FT || _rr < -_FT)
+            if (std::isnormal(_rr))
             return _rr ;
 
         _rr = orient2d_e(               // "exact" kernel
@@ -113,6 +125,7 @@
             ) ;
 
         if (_rr > _FT || _rr < -_FT)
+            if (std::isnormal(_rr))
             return _rr ;
 
         _rr = orient3d_e(               // "exact" kernel
@@ -123,6 +136,128 @@
             return _rr ;
 
         return (REAL_TYPE) +0.0E+00;
+    }
+
+    __inline_call REAL_TYPE bisect2d (
+      __const_ptr(REAL_TYPE) _pa ,
+      __const_ptr(REAL_TYPE) _pb ,
+      __const_ptr(REAL_TYPE) _pc        
+        )
+    {
+    /*------------ bisect2d predicate, "filtered" version */
+        REAL_TYPE _FT, _rr;
+
+        _rr = bisect2d_f(               // "float" kernel
+            _pa, _pb, _pc, _FT
+            ) ;
+
+        if (_rr > _FT || _rr < -_FT)
+            if (std::isnormal(_rr))
+            return _rr ;
+        
+        _rr = bisect2d_e(               // "exact" kernel
+            _pa, _pb, _pc, _FT
+            ) ;
+        
+        if (_rr > _FT || _rr < -_FT)
+            return _rr ;
+
+        return (REAL_TYPE) +0.0E+00;
+    }
+
+    __inline_call REAL_TYPE bisect2w (
+      __const_ptr(REAL_TYPE) _pa ,
+      __const_ptr(REAL_TYPE) _pb ,
+      __const_ptr(REAL_TYPE) _pc        
+        )
+    {
+    /*------------ bisect2w predicate, "filtered" version */
+        if (_pa [ 2] == _pb [ 2] )
+        {                   // equal weights, do bisect2d
+        return bisect2d(_pa, _pb, _pc) ;
+        }
+        else
+        {
+        REAL_TYPE _FT, _rr; // given weights, full kernel
+
+        _rr = bisect2w_f(               // "float" kernel
+            _pa, _pb, _pc, _FT
+            ) ;
+
+        if (_rr > _FT || _rr < -_FT)
+            if (std::isnormal(_rr))
+            return _rr ;
+        
+        _rr = bisect2w_e(               // "exact" kernel
+            _pa, _pb, _pc, _FT
+            ) ;
+
+        if (_rr > _FT || _rr < -_FT)
+            return _rr ;
+
+        return (REAL_TYPE) +0.0E+00;
+        }
+    }
+
+    __inline_call REAL_TYPE bisect3d (
+      __const_ptr(REAL_TYPE) _pa ,
+      __const_ptr(REAL_TYPE) _pb ,
+      __const_ptr(REAL_TYPE) _pc    
+        )
+    {
+    /*------------ bisect3d predicate, "filtered" version */
+        REAL_TYPE _FT, _rr;
+
+        _rr = bisect3d_f(               // "float" kernel
+            _pa, _pb, _pc, _FT
+            ) ;
+
+        if (_rr > _FT || _rr < -_FT)
+            if (std::isnormal(_rr))
+            return _rr ;
+        
+        _rr = bisect3d_e(               // "exact" kernel
+            _pa, _pb, _pc, _FT
+            ) ;
+
+        if (_rr > _FT || _rr < -_FT)
+            return _rr ;
+
+        return (REAL_TYPE) +0.0E+00;
+    }
+
+    __inline_call REAL_TYPE bisect3w (
+      __const_ptr(REAL_TYPE) _pa ,
+      __const_ptr(REAL_TYPE) _pb ,
+      __const_ptr(REAL_TYPE) _pc
+        )
+    {
+    /*------------ bisect2w predicate, "filtered" version */
+        if (_pa [ 3] == _pb [ 3] )
+        {                   // equal weights, do bisect3d
+        return bisect3d(_pa, _pb, _pc) ;
+        }
+        else
+        {
+        REAL_TYPE _FT, _rr; // given weights, full kernel
+
+        _rr = bisect3w_f(               // "float" kernel
+            _pa, _pb, _pc, _FT
+            ) ;
+
+        if (_rr > _FT || _rr < -_FT)
+            if (std::isnormal(_rr))
+            return _rr ;
+        
+        _rr = bisect3w_e(               // "exact" kernel
+            _pa, _pb, _pc, _FT
+            ) ;
+
+        if (_rr > _FT || _rr < -_FT)
+            return _rr ;
+
+        return (REAL_TYPE) +0.0E+00;
+        }
     }
 
     __inline_call REAL_TYPE inball2d (
@@ -140,6 +275,7 @@
             ) ;
 
         if (_rr > _FT || _rr < -_FT)
+            if (std::isnormal(_rr))
             return _rr ;
 
         _rr = inball2d_e(               // "exact" kernel
@@ -177,6 +313,7 @@
             ) ;
 
         if (_rr > _FT || _rr < -_FT)
+            if (std::isnormal(_rr))
             return _rr ;
 
         _rr = inball2w_e(               // "exact" kernel
@@ -206,6 +343,7 @@
             ) ;
 
         if (_rr > _FT || _rr < -_FT)
+            if (std::isnormal(_rr))
             return _rr ;
 
         _rr = inball3d_e(               // "exact" kernel
@@ -245,6 +383,7 @@
             ) ;
 
         if (_rr > _FT || _rr < -_FT)
+            if (std::isnormal(_rr))
             return _rr ;
 
         _rr = inball3w_e(               // "exact" kernel
