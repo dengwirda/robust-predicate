@@ -55,7 +55,7 @@
      *
     --------------------------------------------------------
      *
-     * Last updated: 03 March, 2020
+     * Last updated: 07 April, 2020
      *
      * Copyright 2020--
      * Darren Engwirda
@@ -655,7 +655,7 @@
         size_t NA, size_t NB, size_t NC,
         size_t ND
              >
-    __normal_call void      expansion_add (
+    __inline_call void      expansion_add (
         expansion <NA> const& _aa,
         expansion <NB> const& _bb,
         expansion <NC> const& _cc,
@@ -672,7 +672,7 @@
         size_t NA, size_t NB, size_t NC,
         size_t ND, size_t NE
              >
-    __normal_call void      expansion_add (
+    __inline_call void      expansion_add (
         expansion <NA> const& _aa,
         expansion <NB> const& _bb,
         expansion <NC> const& _cc,
@@ -921,6 +921,61 @@
 
         return    _rr ;
     }
+
+    /*
+    --------------------------------------------------------
+     * form dot-products for multi-precision expansions
+    --------------------------------------------------------
+     */
+
+    template <
+        size_t AX, size_t BX, size_t AY,
+        size_t BY, size_t NP
+             >
+    __inline_call void      expansion_dot (
+        expansion <AX> const& _xa,
+        expansion <BX> const& _xb,
+        expansion <AY> const& _ya,
+        expansion <BY> const& _yb,
+        expansion <NP> & _dp
+        )                           // 2-dim dotproduct
+    {
+        expansion<mul_alloc(AX,  BX)> _xp ;
+        expansion_mul(_xa, _xb, _xp);
+
+        expansion<mul_alloc(AY,  BY)> _yp ;
+        expansion_mul(_ya, _yb, _yp);
+
+        expansion_add(_xp, _yp, _dp);
+    }
+
+    template <
+        size_t AX, size_t BX, size_t AY,
+        size_t BY, size_t AZ, size_t BZ,
+        size_t NP
+             >
+    __inline_call void      expansion_dot (
+        expansion <AX> const& _xa,
+        expansion <BX> const& _xb,
+        expansion <AY> const& _ya,
+        expansion <BY> const& _yb,
+        expansion <AZ> const& _za,
+        expansion <BZ> const& _zb,
+        expansion <NP> & _dp
+        )                           // 3-dim dotproduct
+    {
+        expansion<mul_alloc(AX,  BX)> _xp ;
+        expansion_mul(_xa, _xb, _xp);
+
+        expansion<mul_alloc(AY,  BY)> _yp ;
+        expansion_mul(_ya, _yb, _yp);
+
+        expansion<mul_alloc(AZ,  BZ)> _zp ;
+        expansion_mul(_za, _zb, _zp);
+
+        expansion_add(_xp, _yp, _zp,  _dp);
+    }
+
 
 #   undef REAL_TYPE
 #   undef INDX_TYPE

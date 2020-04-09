@@ -9,14 +9,18 @@ This package aims to implement a "zero-overhead" abstraction; leveraging various
 The following predicates are currently available:
 ````
 orient2d: orientation of 3 points in E^2, or a point wrt. a line.
+bisect2d: orientation of point wrt. half-space in E^2.
+bisect2w: orientation of point wrt. half-space in E^2 (weighted).
 inball2d: point-in-circumball (Delaunay-Voronoi tessellations) in E^2. 
-inball2w: point-in-ortho-ball (Laguerre-Regular tessellations) in E^2.
+inball2w: point-in-ortho-ball (Regular-Laguerre tessellations) in E^2.
 
 orient3d: orientation of 4 points in E^3, or a point wrt. a plane.
+bisect3d: orientation of point wrt. half-space in E^3.
+bisect3w: orientation of point wrt. half-space in E^3 (weighted).
 inball3d: point-in-circumball (Delaunay-Voronoi tessellations) in E^3.
-inball3w: point-in-ortho-ball (Laguerre-Regular tessellations) in E^3.
+inball3w: point-in-ortho-ball (Regular-Laguerre tessellations) in E^3.
 ````
-A simplified two-stage variation on <a href=https://doi.org/10.1007/PL00009321>Shewchuk's original arithmetic</a> is employed, adopting standard floating-point approximations when results are unambiguous and falling back onto (slower) arbitrary precision evaluations as necessary to guarantee "sign-correctness". 
+A simplified two-stage variation on <a href=https://doi.org/10.1007/PL00009321>Shewchuk's original arithmetic</a> is employed, adopting standard (fast!) floating-point approximations when results are unambiguous and falling back onto (slower) arbitrary precision evaluations as necessary to guarantee "sign-correctness". Semi-static filters are used to toggle between floating-point and arbitrary precision implementations.
 
 ### `License`
 
@@ -29,3 +33,6 @@ This program may be freely redistributed under the condition that the copyright 
 `[1]` - J. R. Shewchuk (1997), Adaptive Precision Floating-Point Arithmetic & Fast Robust Geometric Predicates. Discrete & Computational Geometry, 18, pp. 305-363.
 
 `[2]` - B. Lévy (2016), Robustness and efficiency of geometric programs: The Predicate Construction Kit (PCK). Computer-Aided Design, 72, pp. 03-12.
+
+`[3]` - C. Burnikel, S. Funke, and M. Seel (2001), Exact geometric computation using cascading. IJCGA (Special issue) 11 (3), pp. 245–266.
+

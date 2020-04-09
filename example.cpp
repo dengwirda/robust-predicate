@@ -38,7 +38,33 @@ int main () {
         _pa, _pb, _qq
         ) ;
 
+    std::cout << std::showpos;
+
     std::cout << "orient2d: " << _rr;
+    std::cout << std::endl;
+
+    // Test the orienation of the point QQ wrt. the half-
+    // space of PA, PB. 
+
+    // This is the unweighted case in E^2.
+
+    _rr = geompred::bisect2d (
+        _pa, _pb, _qq
+        ) ;
+
+    std::cout << "bisect2d: " << _rr;
+    std::cout << std::endl;
+
+    // Test the orienation of the point QQ wrt. the half-
+    // space of PA, PB. 
+
+    // This is the "weighted" case in E^2.
+
+    _rr = geompred::bisect2w (
+        _pa, _pb, _qq
+        ) ;
+
+    std::cout << "bisect2w: " << _rr;
     std::cout << std::endl;
 
     // Test whether the point QQ is contained within the
@@ -96,6 +122,30 @@ int main () {
         ) ;
 
     std::cout << "orient3d: " << _rr;
+    std::cout << std::endl;
+
+    // Test the orienation of the point QQ wrt. the half-
+    // space of PA, PB. 
+
+    // This is the unweighted case in E^3.
+
+    _rr = geompred::bisect3d (
+        _PA, _PB, _QQ
+        ) ;
+
+    std::cout << "bisect3d: " << _rr;
+    std::cout << std::endl;
+
+    // Test the orienation of the point QQ wrt. the half-
+    // space of PA, PB. 
+
+    // This is the "weighted" case in E^3.
+
+    _rr = geompred::bisect3w (
+        _PA, _PB, _QQ
+        ) ;
+
+    std::cout << "bisect3w: " << _rr;
     std::cout << std::endl;
 
     // Test whether the point QQ is contained within the

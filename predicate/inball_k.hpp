@@ -31,7 +31,7 @@
      *
     --------------------------------------------------------
      *
-     * Last updated: 01 March, 2020
+     * Last updated: 08 April, 2020
      *
      * Copyright 2020--
      * Darren Engwirda
@@ -165,8 +165,7 @@
     {
     /*--------------- inball2d predicate, "float" version */
         REAL_TYPE static const _ER =
-        + 10. * std::pow(mp::_epsilon, 1) +
-        + 96. * std::pow(mp::_epsilon, 2) ;
+        + 11. * std::pow(mp::_epsilon, 1) ;
 
         REAL_TYPE _adx, _ady, _ali ,
                   _bdx, _bdy, _bli ,
@@ -351,8 +350,7 @@
     {
     /*--------------- inball2w predicate, "float" version */
         REAL_TYPE static const _ER =
-        + 10. * std::pow(mp::_epsilon, 1) +
-        + 96. * std::pow(mp::_epsilon, 2) ;
+        + 12. * std::pow(mp::_epsilon, 1) ;
 
         REAL_TYPE _adx, _ady, _adw ,
                   _bdx, _bdy, _bdw ,
@@ -643,8 +641,7 @@
     {
     /*--------------- inball3d predicate, "float" version */
         REAL_TYPE static const _ER =
-        + 16. * std::pow(mp::_epsilon, 1) +
-        +224. * std::pow(mp::_epsilon, 2) ;
+        + 17. * std::pow(mp::_epsilon, 1) ;
 
         REAL_TYPE _aex, _aey, _aez ,
                   _ali,
@@ -1031,8 +1028,7 @@
     {
     /*--------------- inball3w predicate, "float" version */
         REAL_TYPE static const _ER =
-        + 16. * std::pow(mp::_epsilon, 1) +
-        +224. * std::pow(mp::_epsilon, 2) ;
+        + 18. * std::pow(mp::_epsilon, 1) ;
 
         REAL_TYPE _aex, _aey, _aez ,
                   _aew, _ali,
