@@ -31,9 +31,9 @@
  *
 ------------------------------------------------------------
  *
- * Last updated: 01 March, 2020
+ * Last updated: 11 April, 2020
  *
- * Copyright 2013-2020
+ * Copyright 2020--
  * Darren Engwirda
  * de2363@columbia.edu
  * https://github.com/dengwirda/
@@ -54,7 +54,14 @@
     typedef int     indx_type;
     }
 
+#   include <algorithm>
+#   include <cmath>
+#   include <cfenv>
+
+//  pragma STDC FENV_ACCESS ON
+
 #   include "expansion/dd_float.hpp"
+#   include "expansion/ia_float.hpp"
 #   include "expansion/mp_float.hpp"
 
 #   include "expansion/mp_utils.hpp"

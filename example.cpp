@@ -1,5 +1,5 @@
 
-// g++ -std=c++17 -pedantic -Wall -O3 -flto -DNDEBUG 
+// g++ -std=c++17 -pedantic -Wall -O3 -flto -DNDEBUG
 // example.cpp -oexample
 
 #include <iostream>
@@ -8,7 +8,7 @@
 
 int main () {
 
-    // Initialise the internal library state. Call at the 
+    // Initialise the internal library state. Call at the
     // start of any program.
 
     mp_float::exactinit() ;
@@ -32,7 +32,7 @@ int main () {
     double _rr ;
 
     // Test the orienation of the point QQ wrt. the line
-    // PA, PB in E^2. 
+    // PA, PB in E^2.
 
     _rr = geompred::orient2d (
         _pa, _pb, _qq
@@ -44,7 +44,7 @@ int main () {
     std::cout << std::endl;
 
     // Test the orienation of the point QQ wrt. the half-
-    // space of PA, PB. 
+    // space of PA, PB.
 
     // This is the unweighted case in E^2.
 
@@ -56,7 +56,7 @@ int main () {
     std::cout << std::endl;
 
     // Test the orienation of the point QQ wrt. the half-
-    // space of PA, PB. 
+    // space of PA, PB.
 
     // This is the "weighted" case in E^2.
 
@@ -68,9 +68,9 @@ int main () {
     std::cout << std::endl;
 
     // Test whether the point QQ is contained within the
-    // circumscribing ball associated with the unweighted 
+    // circumscribing ball associated with the unweighted
     // simplex PA, PB, PC in E^2.
- 
+
     // This is the unweighted case, so only the geometric
     // coordinates PP[0..1] are used.
 
@@ -82,7 +82,7 @@ int main () {
     std::cout << std::endl;
 
     // Test whether the point QQ is contained within the
-    // "orthogonal" ball associated with the weighted 
+    // "orthogonal" ball associated with the weighted
     // simplex PA, PB, PC in E^2.
 
     // This is the "weighted" case, so the full (x, y, w)
@@ -115,7 +115,7 @@ int main () {
         } ;
 
     // Test the orienation of the point QQ wrt. the plane
-    // PA, PB, PC in E^3. 
+    // PA, PB, PC in E^3.
 
     _rr = geompred::orient3d (
         _PA, _PB, _PC, _QQ
@@ -125,7 +125,7 @@ int main () {
     std::cout << std::endl;
 
     // Test the orienation of the point QQ wrt. the half-
-    // space of PA, PB. 
+    // space of PA, PB.
 
     // This is the unweighted case in E^3.
 
@@ -137,7 +137,7 @@ int main () {
     std::cout << std::endl;
 
     // Test the orienation of the point QQ wrt. the half-
-    // space of PA, PB. 
+    // space of PA, PB.
 
     // This is the "weighted" case in E^3.
 
@@ -149,9 +149,9 @@ int main () {
     std::cout << std::endl;
 
     // Test whether the point QQ is contained within the
-    // circumscribing ball associated with the unweighted 
+    // circumscribing ball associated with the unweighted
     // simplex PA, PB, PC, PD in E^3.
- 
+
     // This is the unweighted case, so only the geometric
     // coordinates PP[0..2] are used.
 
@@ -163,7 +163,7 @@ int main () {
     std::cout << std::endl;
 
     // Test whether the point QQ is contained within the
-    // "orthogonal" ball associated with the weighted 
+    // "orthogonal" ball associated with the weighted
     // simplex PA, PB, PC, PD in E^3.
 
     // This is the "weighted" case, so the full (x,y,z,w)

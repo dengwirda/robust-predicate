@@ -20,7 +20,9 @@ bisect3w: orientation of point wrt. half-space in E^3 (weighted).
 inball3d: point-in-circumball (Delaunay-Voronoi tessellations) in E^3.
 inball3w: point-in-ortho-ball (Regular-Laguerre tessellations) in E^3.
 ````
-A simplified two-stage variation on <a href=https://doi.org/10.1007/PL00009321>Shewchuk's original arithmetic</a> is employed, adopting standard (fast!) floating-point approximations when results are unambiguous and falling back onto (slower) arbitrary precision evaluations as necessary to guarantee "sign-correctness". Semi-static filters are used to toggle between floating-point and arbitrary precision kernels.
+A simplified two-stage variation on <a href=https://doi.org/10.1007/PL00009321>Shewchuk's original arithmetic</a> is employed, adopting standard (fast!) floating-point approximations when results are unambiguous and falling back onto (slower) arbitrary precision evaluations as necessary to guarantee "sign-correctness". Semi-static filters are used to toggle between floating-point and arbitrary precision kernels. An optional third (intermediate) stage based on interval arithmetic is also available.
+
+In addition to support for multi-precision expansions, a simplified "double-double" precision number type is also provided, enabling construction of geometric primitives with approximately twice the precision of standard floating-point evaluations.
 
 ### `License`
 
@@ -35,4 +37,10 @@ This program may be freely redistributed under the condition that the copyright 
 `[2]` - B. Lévy (2016), Robustness and efficiency of geometric programs: The Predicate Construction Kit (PCK). Computer-Aided Design, 72, pp. 03-12.
 
 `[3]` - C. Burnikel, S. Funke, and M. Seel (2001), Exact geometric computation using cascading. IJCGA (Special issue) 11 (3), pp. 245–266.
+
+`[4]` - M. Joldes, J-M. Muller, V. Popescu (2017): Tight and rigorous error bounds for basic building blocks of double-word arithmetic. ACM Transactions on Mathematical Software, ACM, 44 (2), pp. 1-27.
+
+`[5]` - Y. Hida, X. Li, and D. Bailey (2000): Quad-double arithmetic: Algorithms, implementation, and application. In the 15th IEEE Symposium on Computer Arithmetic, pp. 155-162.
+
+
 

@@ -31,7 +31,7 @@
      *
     --------------------------------------------------------
      *
-     * Last updated: 08 April, 2020
+     * Last updated: 14 April, 2020
      *
      * Copyright 2020--
      * Darren Engwirda
@@ -65,7 +65,7 @@
       __const_ptr(REAL_TYPE) _pb ,
       __const_ptr(REAL_TYPE) _pc ,
       __const_ptr(REAL_TYPE) _pd ,
-        REAL_TYPE &_FT
+        bool_type &_OK
         )
     {
     /*--------------- inball2d predicate, "exact" version */
@@ -79,7 +79,7 @@
                            _d3_acd, _d3_bcd;
         mp::expansion<384> _d4full;
 
-        _FT = (REAL_TYPE) +0.0E+00;
+        _OK = true;
 
     /*-------------------------------------- lifted terms */
         mp::expansion_add(
@@ -152,7 +152,65 @@
                         _d4full, +3) ;
 
     /*-------------------------------------- leading det. */
-        return _d4full[_d4full._xlen - 1] ;
+        return mp::expansion_est(_d4full) ;
+    }
+
+    __normal_call REAL_TYPE inball2d_i (
+      __const_ptr(REAL_TYPE) _pa ,
+      __const_ptr(REAL_TYPE) _pb ,
+      __const_ptr(REAL_TYPE) _pc ,
+      __const_ptr(REAL_TYPE) _pd ,
+        bool_type &_OK
+        )
+    {
+    /*--------------- inball2d predicate, "bound" version */
+        ia_flt    _adx, _ady, _adw ,
+                  _bdx, _bdy, _bdw ,
+                  _cdx, _cdy, _cdw ;
+        ia_flt    _ali, _bli, _cli ;
+        ia_flt    _bdxcdy, _cdxbdy ,
+                  _cdxady, _adxcdy ,
+                  _adxbdy, _bdxady ;
+
+        ia_flt    _d33;
+
+        ia_rnd    _rnd;                   // up rounding!
+
+        _adx.from_sub(_pa[0], _pd[0]) ;   // coord. diff.
+        _ady.from_sub(_pa[1], _pd[1]) ;
+        _adw.from_sub(_pa[2], _pd[2]) ;
+
+        _bdx.from_sub(_pb[0], _pd[0]) ;
+        _bdy.from_sub(_pb[1], _pd[1]) ;
+        _bdw.from_sub(_pb[2], _pd[2]) ;
+
+        _cdx.from_sub(_pc[0], _pd[0]) ;
+        _cdy.from_sub(_pc[1], _pd[1]) ;
+        _cdw.from_sub(_pc[2], _pd[2]) ;
+
+        _ali =  sqr (_adx) + sqr (_ady) ; // lifted terms
+
+        _bli =  sqr (_bdx) + sqr (_bdy) ;
+
+        _cli =  sqr (_cdx) + sqr (_cdy) ;
+
+        _bdxcdy = _bdx * _cdy ;           // 2 x 2 minors
+        _cdxbdy = _cdx * _bdy ;
+        _cdxady = _cdx * _ady ;
+        _adxcdy = _adx * _cdy ;
+        _adxbdy = _adx * _bdy ;
+        _bdxady = _bdx * _ady ;
+
+        _d33 =                            // 3 x 3 result
+          _ali * (_bdxcdy - _cdxbdy)
+        + _bli * (_cdxady - _adxcdy)
+        + _cli * (_adxbdy - _bdxady) ;
+
+        _OK =
+          _d33.lo() >= (REAL_TYPE)0.
+        ||_d33.up() <= (REAL_TYPE)0. ;
+
+        return ( _d33.mid() ) ;
     }
 
     __normal_call REAL_TYPE inball2d_f (
@@ -160,7 +218,7 @@
       __const_ptr(REAL_TYPE) _pb ,
       __const_ptr(REAL_TYPE) _pc ,
       __const_ptr(REAL_TYPE) _pd ,
-        REAL_TYPE &_FT
+        bool_type &_OK
         )
     {
     /*--------------- inball2d predicate, "float" version */
@@ -177,6 +235,8 @@
         REAL_TYPE _BDXCDY, _CDXBDY ,
                   _CDXADY, _ADXCDY ,
                   _ADXBDY, _BDXADY ;
+
+        REAL_TYPE _d33, _FT ;
 
         _adx = _pa [0] - _pd [0] ;        // coord. diff.
         _ady = _pa [1] - _pd [1] ;
@@ -214,10 +274,15 @@
 
         _FT *= _ER ;
 
-        return                            // 3 x 3 result
+        _d33 =                            // 3 x 3 result
           _ali * (_bdxcdy - _cdxbdy)
         + _bli * (_cdxady - _adxcdy)
         + _cli * (_adxbdy - _bdxady) ;
+
+        _OK  =
+          _d33 > +_FT || _d33 < -_FT ;
+
+        return ( _d33 ) ;
     }
 
     /*
@@ -241,7 +306,7 @@
       __const_ptr(REAL_TYPE) _pb ,
       __const_ptr(REAL_TYPE) _pc ,
       __const_ptr(REAL_TYPE) _pd ,
-        REAL_TYPE &_FT
+        bool_type &_OK
         )
     {
     /*--------------- inball2w predicate, "exact" version */
@@ -256,7 +321,7 @@
                            _d3_acd, _d3_bcd;
         mp::expansion<480> _d4full;
 
-        _FT = (REAL_TYPE) +0.0E+00;
+        _OK = true;
 
     /*-------------------------------------- lifted terms */
         mp::expansion_add(
@@ -337,7 +402,68 @@
                         _d4full, +3) ;
 
     /*-------------------------------------- leading det. */
-        return _d4full[_d4full._xlen - 1] ;
+        return mp::expansion_est(_d4full) ;
+    }
+
+    __normal_call REAL_TYPE inball2w_i (
+      __const_ptr(REAL_TYPE) _pa ,
+      __const_ptr(REAL_TYPE) _pb ,
+      __const_ptr(REAL_TYPE) _pc ,
+      __const_ptr(REAL_TYPE) _pd ,
+        bool_type &_OK
+        )
+    {
+    /*--------------- inball2w predicate, "bound" version */
+        ia_flt    _adx, _ady, _adw ,
+                  _bdx, _bdy, _bdw ,
+                  _cdx, _cdy, _cdw ;
+        ia_flt    _ali, _bli, _cli ;
+        ia_flt    _bdxcdy, _cdxbdy ,
+                  _cdxady, _adxcdy ,
+                  _adxbdy, _bdxady ;
+
+        ia_flt    _d33;
+
+        ia_rnd    _rnd;                   // up rounding!
+
+        _adx.from_sub(_pa[0], _pd[0]) ;   // coord. diff.
+        _ady.from_sub(_pa[1], _pd[1]) ;
+        _adw.from_sub(_pa[2], _pd[2]) ;
+
+        _bdx.from_sub(_pb[0], _pd[0]) ;
+        _bdy.from_sub(_pb[1], _pd[1]) ;
+        _bdw.from_sub(_pb[2], _pd[2]) ;
+
+        _cdx.from_sub(_pc[0], _pd[0]) ;
+        _cdy.from_sub(_pc[1], _pd[1]) ;
+        _cdw.from_sub(_pc[2], _pd[2]) ;
+
+        _ali =  sqr (_adx) + sqr (_ady)   // lifted terms
+             - _adw ;
+
+        _bli =  sqr (_bdx) + sqr (_bdy)
+             - _bdw ;
+
+        _cli =  sqr (_cdx) + sqr (_cdy)
+             - _cdw ;
+
+        _bdxcdy = _bdx * _cdy ;           // 2 x 2 minors
+        _cdxbdy = _cdx * _bdy ;
+        _cdxady = _cdx * _ady ;
+        _adxcdy = _adx * _cdy ;
+        _adxbdy = _adx * _bdy ;
+        _bdxady = _bdx * _ady ;
+
+        _d33 =                            // 3 x 3 result
+          _ali * (_bdxcdy - _cdxbdy)
+        + _bli * (_cdxady - _adxcdy)
+        + _cli * (_adxbdy - _bdxady) ;
+
+        _OK =
+          _d33.lo() >= (REAL_TYPE)0.
+        ||_d33.up() <= (REAL_TYPE)0. ;
+
+        return ( _d33.mid() ) ;
     }
 
     __normal_call REAL_TYPE inball2w_f (
@@ -345,7 +471,7 @@
       __const_ptr(REAL_TYPE) _pb ,
       __const_ptr(REAL_TYPE) _pc ,
       __const_ptr(REAL_TYPE) _pd ,
-        REAL_TYPE &_FT
+        bool_type &_OK
         )
     {
     /*--------------- inball2w predicate, "float" version */
@@ -364,6 +490,8 @@
         REAL_TYPE _BDXCDY, _CDXBDY ,
                   _CDXADY, _ADXCDY ,
                   _ADXBDY, _BDXADY ;
+
+        REAL_TYPE _d33, _FT ;
 
         _adx = _pa [0] - _pd [0] ;        // coord. diff.
         _ady = _pa [1] - _pd [1] ;
@@ -413,10 +541,15 @@
 
         _FT *= _ER ;
 
-        return                            // 3 x 3 result
+        _d33 =                            // 3 x 3 result
           _ali * (_bdxcdy - _cdxbdy)
         + _bli * (_cdxady - _adxcdy)
         + _cli * (_adxbdy - _bdxady) ;
+
+        _OK  =
+          _d33 > +_FT || _d33 < -_FT ;
+
+        return ( _d33 ) ;
     }
 
     /*
@@ -442,7 +575,7 @@
       __const_ptr(REAL_TYPE) _pc ,
       __const_ptr(REAL_TYPE) _pd ,
       __const_ptr(REAL_TYPE) _pe ,
-        REAL_TYPE &_FT
+        bool_type &_OK
         )
     {
     /*--------------- inball3d predicate, "exact" version */
@@ -466,7 +599,7 @@
                            _d4bcde;
         mp::expansion<5760>_d5full;
 
-        _FT = (REAL_TYPE) +0.0E+00;
+        _OK = true;
 
         mp::expansion< 1 > _pa_zz_(_pa[ 2]);
         mp::expansion< 1 > _pb_zz_(_pb[ 2]);
@@ -627,7 +760,117 @@
                         _d5full, +4) ;
 
     /*-------------------------------------- leading det. */
-        return _d5full[_d5full._xlen - 1] ;
+        return mp::expansion_est(_d5full) ;
+    }
+
+    __normal_call REAL_TYPE inball3d_i (
+      __const_ptr(REAL_TYPE) _pa ,
+      __const_ptr(REAL_TYPE) _pb ,
+      __const_ptr(REAL_TYPE) _pc ,
+      __const_ptr(REAL_TYPE) _pd ,
+      __const_ptr(REAL_TYPE) _pe ,
+        bool_type &_OK
+        )
+    {
+    /*--------------- inball3d predicate, "bound" version */
+        ia_flt    _aex, _aey, _aez ,
+                  _ali,
+                  _bex, _bey, _bez ,
+                  _bli,
+                  _cex, _cey, _cez ,
+                  _cli,
+                  _dex, _dey, _dez ,
+                  _dli;
+        ia_flt    _aexbey, _bexaey ,
+                  _aexcey, _cexaey ,
+                  _bexcey, _cexbey ,
+                  _cexdey, _dexcey ,
+                  _dexaey, _aexdey ,
+                  _bexdey, _dexbey ;
+        ia_flt    _ab_, _bc_, _cd_, _da_,
+                  _ac_, _bd_;
+        ia_flt    _abc, _bcd, _cda, _dab;
+        ia_flt    _d44;
+
+        ia_rnd    _rnd;                   // up rounding!
+
+        _aex.from_sub(_pa[0], _pe[0]) ;   // coord. diff.
+        _aey.from_sub(_pa[1], _pe[1]) ;
+        _aez.from_sub(_pa[2], _pe[2]) ;
+
+        _bex.from_sub(_pb[0], _pe[0]) ;
+        _bey.from_sub(_pb[1], _pe[1]) ;
+        _bez.from_sub(_pb[2], _pe[2]) ;
+
+        _cex.from_sub(_pc[0], _pe[0]) ;
+        _cey.from_sub(_pc[1], _pe[1]) ;
+        _cez.from_sub(_pc[2], _pe[2]) ;
+
+        _dex.from_sub(_pd[0], _pe[0]) ;
+        _dey.from_sub(_pd[1], _pe[1]) ;
+        _dez.from_sub(_pd[2], _pe[2]) ;
+
+        _ali = sqr (_aex) + sqr (_aey)    // lifted terms
+             + sqr (_aez) ;
+
+        _bli = sqr (_bex) + sqr (_bey)
+             + sqr (_bez) ;
+
+        _cli = sqr (_cex) + sqr (_cey)
+             + sqr (_cez) ;
+
+        _dli = sqr (_dex) + sqr (_dey)
+             + sqr (_dez) ;
+
+        _aexbey = _aex * _bey ;           // 2 x 2 minors
+        _bexaey = _bex * _aey ;
+        _ab_ = _aexbey - _bexaey ;
+
+        _bexcey = _bex * _cey;
+        _cexbey = _cex * _bey;
+        _bc_ = _bexcey - _cexbey ;
+
+        _cexdey = _cex * _dey;
+        _dexcey = _dex * _cey;
+        _cd_ = _cexdey - _dexcey ;
+
+        _dexaey = _dex * _aey;
+        _aexdey = _aex * _dey;
+        _da_ = _dexaey - _aexdey ;
+
+        _aexcey = _aex * _cey;
+        _cexaey = _cex * _aey;
+        _ac_ = _aexcey - _cexaey ;
+
+        _bexdey = _bex * _dey;
+        _dexbey = _dex * _bey;
+        _bd_ = _bexdey - _dexbey ;
+
+        _abc =                            // 3 x 3 minors
+          _aez * _bc_ - _bez * _ac_
+        + _cez * _ab_ ;
+
+        _bcd =
+          _bez * _cd_ - _cez * _bd_
+        + _dez * _bc_ ;
+
+        _cda =
+          _cez * _da_ + _dez * _ac_
+        + _aez * _cd_ ;
+
+        _dab =
+          _dez * _ab_ + _aez * _bd_
+        + _bez * _da_ ;
+
+        _d44 =                            // 4 x 4 result
+          _dli * _abc - _cli * _dab
+        + _bli * _cda - _ali * _bcd ;
+
+        _OK =
+          _d44.lo() >= (REAL_TYPE)0.
+        ||_d44.up() <= (REAL_TYPE)0.;
+
+        return ( _d44.mid() ) ;
     }
 
     __normal_call REAL_TYPE inball3d_f (
@@ -636,7 +879,7 @@
       __const_ptr(REAL_TYPE) _pc ,
       __const_ptr(REAL_TYPE) _pd ,
       __const_ptr(REAL_TYPE) _pe ,
-        REAL_TYPE &_FT
+        bool_type &_OK
         )
     {
     /*--------------- inball3d predicate, "float" version */
@@ -671,6 +914,8 @@
         REAL_TYPE _AB_, _BC_, _CD_, _DA_,
                   _AC_, _BD_;
         REAL_TYPE _ABC, _BCD, _CDA, _DAB;
+
+        REAL_TYPE _d44, _FT ;
 
         _aex = _pa [0] - _pe [0] ;        // coord. diff.
         _aey = _pa [1] - _pe [1] ;
@@ -790,9 +1035,14 @@
 
         _FT *= _ER ;
 
-        return                            // 4 x 4 result
+        _d44 =                            // 4 x 4 result
           _dli * _abc - _cli * _dab
         + _bli * _cda - _ali * _bcd ;
+
+        _OK  =
+          _d44 > _FT || _d44 < -_FT ;
+
+        return ( _d44 ) ;
     }
 
     /*
@@ -818,7 +1068,7 @@
       __const_ptr(REAL_TYPE) _pc ,
       __const_ptr(REAL_TYPE) _pd ,
       __const_ptr(REAL_TYPE) _pe ,
-        REAL_TYPE &_FT
+        bool_type &_OK
         )
     {
     /*--------------- inball3w predicate, "exact" version */
@@ -843,7 +1093,7 @@
                            _d4bcde;
         mp::expansion<6720>_d5full;
 
-        _FT = (REAL_TYPE) +0.0E+00;
+        _OK = true;
 
         mp::expansion< 1 > _pa_zz_(_pa[ 2]);
         mp::expansion< 1 > _pb_zz_(_pb[ 2]);
@@ -1014,7 +1264,121 @@
                         _d5full, +4) ;
 
     /*-------------------------------------- leading det. */
-        return _d5full[_d5full._xlen - 1] ;
+        return mp::expansion_est(_d5full) ;
+    }
+
+    __normal_call REAL_TYPE inball3w_i (
+      __const_ptr(REAL_TYPE) _pa ,
+      __const_ptr(REAL_TYPE) _pb ,
+      __const_ptr(REAL_TYPE) _pc ,
+      __const_ptr(REAL_TYPE) _pd ,
+      __const_ptr(REAL_TYPE) _pe ,
+        bool_type &_OK
+        )
+    {
+    /*--------------- inball3w predicate, "bound" version */
+        ia_flt    _aex, _aey, _aez ,
+                  _aew, _ali,
+                  _bex, _bey, _bez ,
+                  _bew, _bli,
+                  _cex, _cey, _cez ,
+                  _cew, _cli,
+                  _dex, _dey, _dez ,
+                  _dew, _dli;
+        ia_flt    _aexbey, _bexaey ,
+                  _aexcey, _cexaey ,
+                  _bexcey, _cexbey ,
+                  _cexdey, _dexcey ,
+                  _dexaey, _aexdey ,
+                  _bexdey, _dexbey ;
+        ia_flt    _ab_, _bc_, _cd_, _da_,
+                  _ac_, _bd_;
+        ia_flt    _abc, _bcd, _cda, _dab;
+        ia_flt    _d44;
+
+        ia_rnd    _rnd;                   // up rounding!
+
+        _aex.from_sub(_pa[0], _pe[0]) ;   // coord. diff.
+        _aey.from_sub(_pa[1], _pe[1]) ;
+        _aez.from_sub(_pa[2], _pe[2]) ;
+        _aew.from_sub(_pa[3], _pe[3]) ;
+
+        _bex.from_sub(_pb[0], _pe[0]) ;
+        _bey.from_sub(_pb[1], _pe[1]) ;
+        _bez.from_sub(_pb[2], _pe[2]) ;
+        _bew.from_sub(_pb[3], _pe[3]) ;
+
+        _cex.from_sub(_pc[0], _pe[0]) ;
+        _cey.from_sub(_pc[1], _pe[1]) ;
+        _cez.from_sub(_pc[2], _pe[2]) ;
+        _cew.from_sub(_pc[3], _pe[3]) ;
+
+        _dex.from_sub(_pd[0], _pe[0]) ;
+        _dey.from_sub(_pd[1], _pe[1]) ;
+        _dez.from_sub(_pd[2], _pe[2]) ;
+        _dew.from_sub(_pd[3], _pe[3]) ;
+
+        _ali =  sqr(_aex) +  sqr(_aey)    // lifted terms
+             +  sqr(_aez) - _aew ;
+
+        _bli =  sqr(_bex) +  sqr(_bey)
+             +  sqr(_bez) - _bew ;
+
+        _cli =  sqr(_cex) +  sqr(_cey)
+             +  sqr(_cez) - _cew ;
+
+        _dli =  sqr(_dex) +  sqr(_dey)
+             +  sqr(_dez) - _dew ;
+
+        _aexbey = _aex * _bey ;           // 2 x 2 minors
+        _bexaey = _bex * _aey ;
+        _ab_ = _aexbey - _bexaey ;
+
+        _bexcey = _bex * _cey;
+        _cexbey = _cex * _bey;
+        _bc_ = _bexcey - _cexbey ;
+
+        _cexdey = _cex * _dey;
+        _dexcey = _dex * _cey;
+        _cd_ = _cexdey - _dexcey ;
+
+        _dexaey = _dex * _aey;
+        _aexdey = _aex * _dey;
+        _da_ = _dexaey - _aexdey ;
+
+        _aexcey = _aex * _cey;
+        _cexaey = _cex * _aey;
+        _ac_ = _aexcey - _cexaey ;
+
+        _bexdey = _bex * _dey;
+        _dexbey = _dex * _bey;
+        _bd_ = _bexdey - _dexbey ;
+
+        _abc =                            // 3 x 3 minors
+          _aez * _bc_ - _bez * _ac_
+        + _cez * _ab_ ;
+
+        _bcd =
+          _bez * _cd_ - _cez * _bd_
+        + _dez * _bc_ ;
+
+        _cda =
+          _cez * _da_ + _dez * _ac_
+        + _aez * _cd_ ;
+
+        _dab =
+          _dez * _ab_ + _aez * _bd_
+        + _bez * _da_ ;
+
+        _d44 =                            // 4 x 4 result
+          _dli * _abc - _cli * _dab
+        + _bli * _cda - _ali * _bcd ;
+
+        _OK =
+          _d44.lo() >= (REAL_TYPE)0.
+        ||_d44.up() <= (REAL_TYPE)0.;
+
+        return ( _d44.mid() ) ;
     }
 
     __normal_call REAL_TYPE inball3w_f (
@@ -1023,7 +1387,7 @@
       __const_ptr(REAL_TYPE) _pc ,
       __const_ptr(REAL_TYPE) _pd ,
       __const_ptr(REAL_TYPE) _pe ,
-        REAL_TYPE &_FT
+        bool_type &_OK
         )
     {
     /*--------------- inball3w predicate, "float" version */
@@ -1059,6 +1423,8 @@
         REAL_TYPE _AB_, _BC_, _CD_, _DA_,
                   _AC_, _BD_;
         REAL_TYPE _ABC, _BCD, _CDA, _DAB;
+
+        REAL_TYPE _d44, _FT ;
 
         _aex = _pa [0] - _pe [0] ;        // coord. diff.
         _aey = _pa [1] - _pe [1] ;
@@ -1190,9 +1556,14 @@
 
         _FT *= _ER ;
 
-        return                            // 4 x 4 result
+        _d44 =                            // 4 x 4 result
           _dli * _abc - _cli * _dab
         + _bli * _cda - _ali * _bcd ;
+
+        _OK  =
+          _d44 > _FT || _d44 < -_FT ;
+
+        return ( _d44 ) ;
     }
 
 

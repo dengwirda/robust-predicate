@@ -4,6 +4,21 @@
      * MPFLOAT: multi-precision floating-point arithmetic.
     --------------------------------------------------------
      *
+     * "double-double" arithmetic. Here mp-expansion size
+     * is capped at 2, with subsequent bits truncated:
+     *
+     * M. Joldes, J-M. Muller, V. Popescu (2017): Tight &
+     * rigourous error bounds for basic building blocks of
+     * double-word arithmetic. ACM Transactions on
+     * Mathematical Software, ACM, 44 (2), pp. 1-27.
+     *
+     * Y. Hida, X. Li, and D. Bailey (2000): Quad-double
+     * arithmetic: Algorithms, implementation, and
+     * application. In the 15th IEEE Symposium on Computer
+     * Arithmetic, pp. 155-162.
+     *
+    --------------------------------------------------------
+     *
      * This program may be freely redistributed under the
      * condition that the copyright notices (including this
      * entire header) are not removed, and no compensation
@@ -31,7 +46,7 @@
      *
     --------------------------------------------------------
      *
-     * Last updated: 02 March, 2020
+     * Last updated: 16 April, 2020
      *
      * Copyright 2020--
      * Darren Engwirda
@@ -52,7 +67,7 @@
 
     /*
     --------------------------------------------------------
-     * DD-FLT: (double-double) precision numbers
+     * DD_FLT: (double-double) precision numbers
     --------------------------------------------------------
      */
 
@@ -191,6 +206,46 @@
     {   return   dd_flt(-hi(), -lo());
     }
 
+/*------------------------------ helper: init. from a + b */
+    __inline_call void from_add (
+        real_type  _aa, real_type  _bb
+        )
+    {
+        mp_float::one_one_add_full(_aa, _bb,
+            this->_xdat[1],
+            this->_xdat[0]) ;
+    }
+
+/*------------------------------ helper: init. from a - b */
+    __inline_call void from_sub (
+        real_type  _aa, real_type  _bb
+        )
+    {
+        mp_float::one_one_sub_full(_aa, _bb,
+            this->_xdat[1],
+            this->_xdat[0]) ;
+    }
+
+/*------------------------------ helper: init. from a * a */
+    __inline_call void from_sqr (
+        real_type  _aa
+        )
+    {
+        mp_float::one_one_sqr_full(_aa,
+            this->_xdat[1],
+            this->_xdat[0]) ;
+    }
+
+/*------------------------------ helper: init. from a * b */
+    __inline_call void from_mul (
+        real_type  _aa, real_type  _bb
+        )
+    {
+        mp_float::one_one_mul_full(_aa, _bb,
+            this->_xdat[1],
+            this->_xdat[0]) ;
+    }
+
     __inline_call dd_flt& operator+= (      // via double
         real_type _aa
         )
@@ -295,7 +350,7 @@
         )
     {
         REAL_TYPE _x0, _x1;
-        mp_float::two_one_add_fast(
+        mp_float::two_one_add_clip(
             _aa.hi(), _aa.lo(), _bb, _x1, _x0
             ) ;
 
@@ -306,7 +361,7 @@
         REAL_TYPE     _aa,
         dd_flt const& _bb
         )
-    {   return ( _bb + _aa ) ;
+    {   return ( +(_bb + _aa) ) ;
     }
 
     __inline_call dd_flt operator + (
@@ -315,7 +370,7 @@
         )
     {
         REAL_TYPE _x0, _x1;
-        mp_float::two_two_add_fast(
+        mp_float::two_two_add_clip(
             _aa.hi(), _aa.lo(),
             _bb.hi(), _bb.lo(), _x1, _x0
             ) ;
@@ -335,11 +390,18 @@
         )
     {
         REAL_TYPE _x0, _x1;
-        mp_float::two_one_sub_fast(
+        mp_float::two_one_sub_clip(
             _aa.hi(), _aa.lo(), _bb, _x1, _x0
             ) ;
 
         return ( dd_flt(_x1, _x0) ) ;
+    }
+
+    __inline_call dd_flt operator - (
+        REAL_TYPE     _aa,
+        dd_flt const& _bb
+        )
+    {   return ( -(_bb - _aa) ) ;
     }
 
     __inline_call dd_flt operator - (
@@ -348,7 +410,7 @@
         )
     {
         REAL_TYPE _x0, _x1;
-        mp_float::two_two_sub_fast(
+        mp_float::two_two_sub_clip(
             _aa.hi(), _aa.lo(),
             _bb.hi(), _bb.lo(), _x1, _x0
             ) ;
@@ -368,7 +430,7 @@
         )
     {
         REAL_TYPE _x0, _x1;
-        mp_float::two_one_mul_fast(
+        mp_float::two_one_mul_clip(
             _aa.hi(), _aa.lo(), _bb, _x1, _x0
             ) ;
 
@@ -388,7 +450,7 @@
         )
     {
         REAL_TYPE _x0, _x1;
-        mp_float::two_two_mul_fast(
+        mp_float::two_two_mul_clip(
             _aa.hi(), _aa.lo(),
             _bb.hi(), _bb.lo(), _x1, _x0
             ) ;
@@ -406,7 +468,13 @@
         dd_flt const& _aa,
         REAL_TYPE     _bb
         )
-    {   return ( _aa / dd_flt(_bb) ) ;
+    {
+        REAL_TYPE _x0, _x1;
+        mp_float::two_one_div_clip(
+            _aa.hi(), _aa.lo(), _bb, _x1, _x0
+            ) ;
+
+        return ( dd_flt(_x1, _x0) ) ;
     }
 
     __inline_call dd_flt operator / (
@@ -422,7 +490,7 @@
         )
     {
         REAL_TYPE _x0, _x1;
-        mp_float::two_two_div_fast(
+        mp_float::two_two_div_clip(
             _aa.hi(), _aa.lo(),
             _bb.hi(), _bb.lo(), _x1, _x0
             ) ;

@@ -31,7 +31,7 @@
      *
     --------------------------------------------------------
      *
-     * Last updated: 08 April, 2020
+     * Last updated: 14 April, 2020
      *
      * Copyright 2020--
      * Darren Engwirda
@@ -63,7 +63,7 @@
       __const_ptr(REAL_TYPE) _pa ,
       __const_ptr(REAL_TYPE) _pb ,
       __const_ptr(REAL_TYPE) _pc ,
-        REAL_TYPE &_FT
+        bool_type &_OK
         )
     {
     /*--------------- orient2d predicate, "exact" version */
@@ -71,7 +71,7 @@
                            _d2_bc_;
         mp::expansion< 12> _d3full;
 
-        _FT = (REAL_TYPE) +0.0E+00;
+        _OK = true;
 
     /*-------------------------------------- 2 x 2 minors */
         compute_det_2x2(_pa[ 0], _pa[ 1],
@@ -92,14 +92,48 @@
                         _d3full, +3) ;
 
     /*-------------------------------------- leading det. */
-        return _d3full[_d3full._xlen - 1] ;
+        return mp::expansion_est(_d3full) ;
+    }
+
+    __normal_call REAL_TYPE orient2d_i (
+      __const_ptr(REAL_TYPE) _pa ,
+      __const_ptr(REAL_TYPE) _pb ,
+      __const_ptr(REAL_TYPE) _pc ,
+        bool_type &_OK
+        )
+    {
+    /*--------------- orient2d predicate, "bound" version */
+        ia_flt    _acx, _acy ;
+        ia_flt    _bcx, _bcy ;
+        ia_flt    _acxbcy, _acybcx ;
+
+        ia_flt    _sgn;
+
+        ia_rnd    _rnd;                   // up rounding!
+
+        _acx.from_sub(_pa[0], _pc[0]) ;   // coord. diff.
+        _acy.from_sub(_pa[1], _pc[1]) ;
+
+        _bcx.from_sub(_pb[0], _pc[0]) ;
+        _bcy.from_sub(_pb[1], _pc[1]) ;
+
+        _acxbcy = _acx * _bcy ;
+        _acybcx = _acy * _bcx ;
+
+        _sgn = _acxbcy - _acybcx ;        // 2 x 2 result
+
+        _OK  =
+           _sgn.lo() >= (REAL_TYPE)0.
+        || _sgn.up() <= (REAL_TYPE)0. ;
+
+        return ( _sgn.mid() ) ;
     }
 
     __normal_call REAL_TYPE orient2d_f (
       __const_ptr(REAL_TYPE) _pa ,
       __const_ptr(REAL_TYPE) _pb ,
       __const_ptr(REAL_TYPE) _pc ,
-        REAL_TYPE &_FT
+        bool_type &_OK
         )
     {
     /*--------------- orient2d predicate, "float" version */
@@ -111,6 +145,8 @@
         REAL_TYPE _acxbcy, _acybcx ;
 
         REAL_TYPE _ACXBCY, _ACYBCX ;
+
+        REAL_TYPE _sgn, _FT;
 
         _acx = _pa [0] - _pc [0] ;        // coord. diff.
         _acy = _pa [1] - _pc [1] ;
@@ -127,7 +163,12 @@
         _FT  = _ACXBCY + _ACYBCX ;        // roundoff tol
         _FT *= _ER ;
 
-        return _acxbcy - _acybcx ;        // 2 x 2 result
+        _sgn = _acxbcy - _acybcx ;        // 2 x 2 result
+
+        _OK  =
+          _sgn > +_FT || _sgn < -_FT ;
+
+        return ( _sgn ) ;
     }
 
     /*
@@ -151,7 +192,7 @@
       __const_ptr(REAL_TYPE) _pb ,
       __const_ptr(REAL_TYPE) _pc ,
       __const_ptr(REAL_TYPE) _pd ,
-        REAL_TYPE &_FT
+        bool_type &_OK
         )
     {
     /*--------------- orient3d predicate, "exact" version */
@@ -163,7 +204,7 @@
                            _d3_acd, _d3_bcd;
         mp::expansion< 96> _d4full;
 
-        _FT = (REAL_TYPE) +0.0E+00;
+        _OK = true;
 
         mp::expansion< 1 > _pa_zz_(_pa[ 2]);
         mp::expansion< 1 > _pb_zz_(_pb[ 2]);
@@ -220,7 +261,58 @@
                         _d4full, +3) ;
 
     /*-------------------------------------- leading det. */
-        return _d4full[_d4full._xlen - 1] ;
+        return mp::expansion_est(_d4full) ;
+    }
+
+    __normal_call REAL_TYPE orient3d_i (
+      __const_ptr(REAL_TYPE) _pa ,
+      __const_ptr(REAL_TYPE) _pb ,
+      __const_ptr(REAL_TYPE) _pc ,
+      __const_ptr(REAL_TYPE) _pd ,
+        bool_type &_OK
+        )
+    {
+    /*--------------- orient3d predicate, "bound" version */
+        ia_flt    _adx, _ady, _adz ,
+                  _bdx, _bdy, _bdz ,
+                  _cdx, _cdy, _cdz ;
+        ia_flt    _bdxcdy, _cdxbdy ,
+                  _cdxady, _adxcdy ,
+                  _adxbdy, _bdxady ;
+
+        ia_flt    _sgn;
+
+        ia_rnd    _rnd;                   // up rounding!
+
+        _adx.from_sub(_pa[0], _pd[0]) ;   // coord. diff.
+        _ady.from_sub(_pa[1], _pd[1]) ;
+        _adz.from_sub(_pa[2], _pd[2]) ;
+
+        _bdx.from_sub(_pb[0], _pd[0]) ;
+        _bdy.from_sub(_pb[1], _pd[1]) ;
+        _bdz.from_sub(_pb[2], _pd[2]) ;
+
+        _cdx.from_sub(_pc[0], _pd[0]) ;
+        _cdy.from_sub(_pc[1], _pd[1]) ;
+        _cdz.from_sub(_pc[2], _pd[2]) ;
+
+        _bdxcdy = _bdx * _cdy ;           // 2 x 2 minors
+        _cdxbdy = _cdx * _bdy ;
+        _cdxady = _cdx * _ady ;
+        _adxcdy = _adx * _cdy ;
+        _adxbdy = _adx * _bdy ;
+        _bdxady = _bdx * _ady ;
+
+        _sgn =                            // 3 x 3 result
+          _adz * (_bdxcdy - _cdxbdy)
+        + _bdz * (_cdxady - _adxcdy)
+        + _cdz * (_adxbdy - _bdxady);
+
+        _OK  =
+          _sgn.lo() >= (REAL_TYPE)0.
+        ||_sgn.up() <= (REAL_TYPE)0.;
+
+        return ( _sgn.mid() ) ;
     }
 
     __normal_call REAL_TYPE orient3d_f (
@@ -228,7 +320,7 @@
       __const_ptr(REAL_TYPE) _pb ,
       __const_ptr(REAL_TYPE) _pc ,
       __const_ptr(REAL_TYPE) _pd ,
-        REAL_TYPE &_FT
+        bool_type &_OK
         )
     {
     /*--------------- orient3d predicate, "float" version */
@@ -246,6 +338,8 @@
         REAL_TYPE _BDXCDY, _CDXBDY ,
                   _CDXADY, _ADXCDY ,
                   _ADXBDY, _BDXADY ;
+
+        REAL_TYPE _sgn, _FT;
 
         _adx = _pa [0] - _pd [0] ;        // coord. diff.
         _ady = _pa [1] - _pd [1] ;
@@ -286,10 +380,15 @@
 
         _FT *= _ER ;
 
-        return                            // 3 x 3 result
+        _sgn =                            // 3 x 3 result
           _adz * (_bdxcdy - _cdxbdy)
         + _bdz * (_cdxady - _adxcdy)
         + _cdz * (_adxbdy - _bdxady) ;
+
+        _OK  =
+          _sgn > +_FT || _sgn < -_FT ;
+
+        return ( _sgn ) ;
     }
 
 

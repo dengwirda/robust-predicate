@@ -192,7 +192,7 @@
 
         this->_xlen =  +2 ;
 
-        one_square_full (_aa,
+        one_one_sqr_full(_aa,
             this->_xdat[1],
             this->_xdat[0]) ;
     }
@@ -264,21 +264,21 @@
 
     __inline_call INDX_TYPE constexpr add_alloc (
         INDX_TYPE _na,
-        INDX_TYPE _nb        
+        INDX_TYPE _nb
         )
     {   return _na + _nb ;
     }
 
     __inline_call INDX_TYPE constexpr sub_alloc (
         INDX_TYPE _na,
-        INDX_TYPE _nb        
+        INDX_TYPE _nb
         )
     {   return _na + _nb ;
     }
 
     __inline_call INDX_TYPE constexpr mul_alloc (
         INDX_TYPE _na,
-        INDX_TYPE _nb        
+        INDX_TYPE _nb
         )
     {   return _na * _nb * +2 ;
     }
@@ -705,7 +705,7 @@
         ) // adapted from:     scale_expansion_zeroelim
     {
         REAL_TYPE _bh, _bl, _t1, _t0 , _ss, _hx, _qq;
-        one_split(_bb, _bh, _bl);
+        one_split(_bb, _bh, _bl) ;
 
         _hh._xlen = +0 ;
 
