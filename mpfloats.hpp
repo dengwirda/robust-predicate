@@ -54,6 +54,7 @@
     typedef int     indx_type;
     }
 
+#   include <algorithm>
 #   include <cmath>
 #   include <cfenv>
 
