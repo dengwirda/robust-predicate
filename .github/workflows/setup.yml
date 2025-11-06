@@ -28,8 +28,12 @@ jobs:
           g++ --version
 
       - name: Build predicates
-        run: g++ -std=c++17 -pedantic -Wall -O3 -flto -DNDEBUG \
-             example.cpp -oexample
+        run: |
+          cd ${{github.workspace}}
+          ls
+          g++ -std=c++17 -pedantic -Wall -O3 -flto -DNDEBUG \
+          example.cpp -oexample
 
       - name: Check predicates
-        run: ./example
+        run: |
+          ./example
