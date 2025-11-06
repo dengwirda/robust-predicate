@@ -31,11 +31,11 @@
  *
 ------------------------------------------------------------
  *
- * Last updated: 11 April, 2020
+ * Last updated: 11 May., 2024
  *
  * Copyright 2020--
  * Darren Engwirda
- * de2363@columbia.edu
+ * d.engwirda@gmail.com
  * https://github.com/dengwirda/
  *
 ------------------------------------------------------------

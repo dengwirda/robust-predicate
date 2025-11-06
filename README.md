@@ -19,6 +19,10 @@ bisect3d: orientation of point wrt. half-space in E^3.
 bisect3w: orientation of point wrt. half-space in E^3 (weighted).
 inball3d: point-in-circumball (Delaunay-Voronoi tessellations) in E^3.
 inball3w: point-in-ortho-ball (Regular-Laguerre tessellations) in E^3.
+
+orient4d: orientation of 5 points in E^4, or a point wrt. a cell.
+bisect4d: orientation of point wrt. half-space in E^4.
+bisect4w: orientation of point wrt. half-space in E^4 (weighted).
 ````
 A simplified two-stage variation on <a href=https://doi.org/10.1007/PL00009321>Shewchuk's original arithmetic</a> is employed, adopting standard (fast!) floating-point approximations when results are unambiguous and falling back onto (slower) arbitrary precision evaluations as necessary to guarantee "sign-correctness". Semi-static filters are used to toggle between floating-point and arbitrary precision kernels. An optional third (intermediate) stage based on interval arithmetic is also available.
 
