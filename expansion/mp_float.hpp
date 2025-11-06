@@ -46,20 +46,24 @@
      * how they can obtain it for free, then you are not
      * required to make any arrangement with me.)
      *
-     * Disclaimer:  Neither I nor: Columbia University, The
-     * Massachusetts Institute of Technology, The
-     * University of Sydney, nor The National Aeronautics
-     * and Space Administration warrant this code in any
-     * way whatsoever.  This code is provided "as-is" to be
-     * used at your own risk.
+     * Disclaimer:  Neither I nor THE CONTRIBUTORS warrant
+     * this code in any way whatsoever.  This code is
+     * provided "as-is" to be used at your own risk.
+     *
+     * THE CONTRIBUTORS include:
+     * (a) The University of Sydney
+     * (b) The Massachusetts Institute of Technology
+     * (c) Columbia University
+     * (d) The National Aeronautics & Space Administration
+     * (e) Los Alamos National Laboratory
      *
     --------------------------------------------------------
      *
-     * Last updated: 07 April, 2020
+     * Last updated: 05 Jun., 2022
      *
      * Copyright 2020--
      * Darren Engwirda
-     * de2363@columbia.edu
+     * d.engwirda@gmail.com
      * https://github.com/dengwirda/
      *
     --------------------------------------------------------
@@ -95,7 +99,7 @@
 
     indx_type static constexpr _size = N ;
 
-    real_type                  _xdat [ N ] ;
+    real_type                  _xdat [ N ]  = { 0. } ;
     indx_type                  _xlen = 0 ;
 
     public  :
@@ -930,7 +934,8 @@
 
     template <
         size_t AX, size_t BX, size_t AY,
-        size_t BY, size_t NP
+        size_t BY,
+        size_t NP
              >
     __inline_call void      expansion_dot (
         expansion <AX> const& _xa,
@@ -976,6 +981,38 @@
         expansion_add(_xp, _yp, _zp,  _dp);
     }
 
+    template <
+        size_t AX, size_t BX, size_t AY,
+        size_t BY, size_t AZ, size_t BZ,
+        size_t AQ, size_t BQ,
+        size_t NP
+             >
+    __inline_call void      expansion_dot (
+        expansion <AX> const& _xa,
+        expansion <BX> const& _xb,
+        expansion <AY> const& _ya,
+        expansion <BY> const& _yb,
+        expansion <AZ> const& _za,
+        expansion <BZ> const& _zb,
+        expansion <AQ> const& _qa,
+        expansion <BQ> const& _qb,
+        expansion <NP> & _dp
+        )                           // 4-dim dotproduct
+    {
+        expansion<mul_alloc(AX,  BX)> _xp ;
+        expansion_mul(_xa, _xb, _xp);
+
+        expansion<mul_alloc(AY,  BY)> _yp ;
+        expansion_mul(_ya, _yb, _yp);
+
+        expansion<mul_alloc(AZ,  BZ)> _zp ;
+        expansion_mul(_za, _zb, _zp);
+
+        expansion<mul_alloc(AQ,  BQ)> _qp ;
+        expansion_mul(_qa, _qb, _qp);
+
+        expansion_add(_xp, _yp, _zp,  _qp, _dp) ;
+    }
 
 #   undef REAL_TYPE
 #   undef INDX_TYPE
