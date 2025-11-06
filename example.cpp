@@ -176,6 +176,62 @@ int main () {
     std::cout << "inball3w: " << _rr;
     std::cout << std::endl;
 
+/*-------------------------------- test prediactes in E^4 */
+
+    double _P1[5] = {           // (d+1) coord. is weight
+        +0.0, +0.0, +0.0, +0.0, +0.0
+        } ;
+    double _P2[5] = {
+        +1.0, +0.0, +0.0, +0.0, +0.1
+        } ;
+    double _P3[5] = {
+        +1.0, +1.0, +0.0, +0.0, +0.2
+        } ;
+    double _P4[5] = {
+        +1.0, +1.0, +1.0, +0.0, +0.3
+        } ;
+//  double _P5[5] = {
+//      +1.0, +1.0, +1.0, +1.0, +0.4
+//      } ;
+
+    double _Q4[5] = {
+        +0.5, +0.5, +0.5, +0.5, +0.0
+        } ;
+
+    // Test the orienation of the point QQ wrt. the cell
+    // P1, P2, P3, P4 in E^4.
+
+    _rr = geompred::orient4d (
+        _P1, _P2, _P3, _P4, _Q4
+        ) ;
+
+    std::cout << "orient4d: " << _rr;
+    std::cout << std::endl;
+
+    // Test the orienation of the point QQ wrt. the half-
+    // space of P1, P2.
+
+    // This is the unweighted case in E^4.
+
+    _rr = geompred::bisect4d (
+        _P1, _P2, _Q4
+        ) ;
+
+    std::cout << "bisect4d: " << _rr;
+    std::cout << std::endl;
+
+    // Test the orienation of the point QQ wrt. the half-
+    // space of P1, P2.
+
+    // This is the "weighted" case in E^4.
+
+    _rr = geompred::bisect4w (
+        _P1, _P2, _Q4
+        ) ;
+
+    std::cout << "bisect4w: " << _rr;
+    std::cout << std::endl;
+
     return 0 ;
 }
 
