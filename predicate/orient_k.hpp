@@ -22,20 +22,24 @@
      * how they can obtain it for free, then you are not
      * required to make any arrangement with me.)
      *
-     * Disclaimer:  Neither I nor: Columbia University, The
-     * Massachusetts Institute of Technology, The
-     * University of Sydney, nor The National Aeronautics
-     * and Space Administration warrant this code in any
-     * way whatsoever.  This code is provided "as-is" to be
-     * used at your own risk.
+     * Disclaimer:  Neither I nor THE CONTRIBUTORS warrant
+     * this code in any way whatsoever.  This code is
+     * provided "as-is" to be used at your own risk.
+     *
+     * THE CONTRIBUTORS include:
+     * (a) The University of Sydney
+     * (b) The Massachusetts Institute of Technology
+     * (c) Columbia University
+     * (d) The National Aeronautics & Space Administration
+     * (e) Los Alamos National Laboratory
      *
     --------------------------------------------------------
      *
-     * Last updated: 14 April, 2020
+     * Last updated: 30 Apr., 2020
      *
      * Copyright 2020--
      * Darren Engwirda
-     * de2363@columbia.edu
+     * d.engwirda@gmail.com
      * https://github.com/dengwirda/
      *
     --------------------------------------------------------
@@ -391,5 +395,458 @@
         return ( _sgn ) ;
     }
 
+    /*
+    --------------------------------------------------------
+     *
+     * Compute an exact determinant using multi-precision
+     * expansions, a'la shewchuk
+     *
+     *   | ax  ay  az  aq  +1. |
+     *   | bx  by  bz  bq  +1. |
+     *   | cx  cy  cz  cq  +1. |
+     *   | dx  dy  dz  dq  +1. |
+     *   | ex  ey  ez  eq  +1. |
+     *
+     * This is the planar "orientation" predicate in E^4.
+     *
+    --------------------------------------------------------
+     */
+
+    __normal_call REAL_TYPE orient4d_e (
+      __const_ptr(REAL_TYPE) _pa ,
+      __const_ptr(REAL_TYPE) _pb ,
+      __const_ptr(REAL_TYPE) _pc ,
+      __const_ptr(REAL_TYPE) _pd ,
+      __const_ptr(REAL_TYPE) _pe ,
+        bool_type &_OK
+        )
+    {
+    /*--------------- orient4d predicate, "exact" version */
+        mp::expansion< 4 > _d2_ab_, _d2_ac_,
+                           _d2_ad_, _d2_ae_,
+                           _d2_bc_, _d2_bd_,
+                           _d2_be_,
+                           _d2_cd_, _d2_ce_,
+                           _d2_de_;
+        mp::expansion< 24> _d3_abc, _d3_abd,
+                           _d3_abe,
+                           _d3_acd, _d3_ace,
+                           _d3_ade,
+                           _d3_bcd, _d3_bce,
+                           _d3_bde, _d3_cde;
+        mp::expansion< 96> _d4abcd, _d4abce,
+                           _d4abde, _d4acde,
+                           _d4bcde;
+        mp::expansion<960> _d5full;
+
+        _OK = true;
+
+        mp::expansion< 1 > _pa_zz_(_pa[ 2]);
+        mp::expansion< 1 > _pb_zz_(_pb[ 2]);
+        mp::expansion< 1 > _pc_zz_(_pc[ 2]);
+        mp::expansion< 1 > _pd_zz_(_pd[ 2]);
+        mp::expansion< 1 > _pe_zz_(_pe[ 2]);
+
+        mp::expansion< 1 > _pa_qq_(_pa[ 3]);
+        mp::expansion< 1 > _pb_qq_(_pb[ 3]);
+        mp::expansion< 1 > _pc_qq_(_pc[ 3]);
+        mp::expansion< 1 > _pd_qq_(_pd[ 3]);
+        mp::expansion< 1 > _pe_qq_(_pe[ 3]);
+
+    /*-------------------------------------- 2 x 2 minors */
+        compute_det_2x2(_pa[ 0], _pa[ 1],
+                        _pb[ 0], _pb[ 1],
+                        _d2_ab_ ) ;
+
+        compute_det_2x2(_pa[ 0], _pa[ 1],
+                        _pc[ 0], _pc[ 1],
+                        _d2_ac_ ) ;
+
+        compute_det_2x2(_pa[ 0], _pa[ 1],
+                        _pd[ 0], _pd[ 1],
+                        _d2_ad_ ) ;
+
+        compute_det_2x2(_pa[ 0], _pa[ 1],
+                        _pe[ 0], _pe[ 1],
+                        _d2_ae_ ) ;
+
+        compute_det_2x2(_pb[ 0], _pb[ 1],
+                        _pc[ 0], _pc[ 1],
+                        _d2_bc_ ) ;
+
+        compute_det_2x2(_pb[ 0], _pb[ 1],
+                        _pd[ 0], _pd[ 1],
+                        _d2_bd_ ) ;
+
+        compute_det_2x2(_pb[ 0], _pb[ 1],
+                        _pe[ 0], _pe[ 1],
+                        _d2_be_ ) ;
+
+        compute_det_2x2(_pc[ 0], _pc[ 1],
+                        _pd[ 0], _pd[ 1],
+                        _d2_cd_ ) ;
+
+        compute_det_2x2(_pc[ 0], _pc[ 1],
+                        _pe[ 0], _pe[ 1],
+                        _d2_ce_ ) ;
+
+        compute_det_2x2(_pd[ 0], _pd[ 1],
+                        _pe[ 0], _pe[ 1],
+                        _d2_de_ ) ;
+
+    /*-------------------------------------- 3 x 3 minors */
+        compute_det_3x3(_d2_bc_, _pa_zz_,
+                        _d2_ac_, _pb_zz_,
+                        _d2_ab_, _pc_zz_,
+                        _d3_abc, +3) ;
+
+        compute_det_3x3(_d2_bd_, _pa_zz_,
+                        _d2_ad_, _pb_zz_,
+                        _d2_ab_, _pd_zz_,
+                        _d3_abd, +3) ;
+
+        compute_det_3x3(_d2_be_, _pa_zz_,
+                        _d2_ae_, _pb_zz_,
+                        _d2_ab_, _pe_zz_,
+                        _d3_abe, +3) ;
+
+        compute_det_3x3(_d2_cd_, _pa_zz_,
+                        _d2_ad_, _pc_zz_,
+                        _d2_ac_, _pd_zz_,
+                        _d3_acd, +3) ;
+
+        compute_det_3x3(_d2_ce_, _pa_zz_,
+                        _d2_ae_, _pc_zz_,
+                        _d2_ac_, _pe_zz_,
+                        _d3_ace, +3) ;
+
+        compute_det_3x3(_d2_de_, _pa_zz_,
+                        _d2_ae_, _pd_zz_,
+                        _d2_ad_, _pe_zz_,
+                        _d3_ade, +3) ;
+
+        compute_det_3x3(_d2_cd_, _pb_zz_,
+                        _d2_bd_, _pc_zz_,
+                        _d2_bc_, _pd_zz_,
+                        _d3_bcd, +3) ;
+
+        compute_det_3x3(_d2_ce_, _pb_zz_,
+                        _d2_be_, _pc_zz_,
+                        _d2_bc_, _pe_zz_,
+                        _d3_bce, +3) ;
+
+        compute_det_3x3(_d2_de_, _pb_zz_,
+                        _d2_be_, _pd_zz_,
+                        _d2_bd_, _pe_zz_,
+                        _d3_bde, +3) ;
+
+        compute_det_3x3(_d2_de_, _pc_zz_,
+                        _d2_ce_, _pd_zz_,
+                        _d2_cd_, _pe_zz_,
+                        _d3_cde, +3) ;
+
+    /*-------------------------------------- 4 x 4 minors */
+        unitary_det_4x4(_d3_cde, _d3_bde,
+                        _d3_bce, _d3_bcd,
+                        _d4bcde, +4) ;
+
+        unitary_det_4x4(_d3_cde, _d3_ade,
+                        _d3_ace, _d3_acd,
+                        _d4acde, +4) ;
+
+        unitary_det_4x4(_d3_bde, _d3_ade,
+                        _d3_abe, _d3_abd,
+                        _d4abde, +4) ;
+
+        unitary_det_4x4(_d3_bce, _d3_ace,
+                        _d3_abe, _d3_abc,
+                        _d4abce, +4) ;
+
+        unitary_det_4x4(_d3_bcd, _d3_acd,
+                        _d3_abd, _d3_abc,
+                        _d4abcd, +4) ;
+
+    /*-------------------------------------- 5 x 5 result */
+        compute_det_5x5(_d4bcde, _pa_qq_,
+                        _d4acde, _pb_qq_,
+                        _d4abde, _pc_qq_,
+                        _d4abce, _pd_qq_,
+                        _d4abcd, _pe_qq_,
+                        _d5full, +4) ;
+
+    /*-------------------------------------- leading det. */
+        return mp::expansion_est(_d5full) ;
+    }
+
+    __normal_call REAL_TYPE orient4d_i (
+      __const_ptr(REAL_TYPE) _pa ,
+      __const_ptr(REAL_TYPE) _pb ,
+      __const_ptr(REAL_TYPE) _pc ,
+      __const_ptr(REAL_TYPE) _pd ,
+      __const_ptr(REAL_TYPE) _pe ,
+        bool_type &_OK
+        )
+    {
+    /*--------------- orient4d predicate, "bound" version */
+        ia_flt    _aex, _aey, _aez ,
+                  _aeq,
+                  _bex, _bey, _bez ,
+                  _beq,
+                  _cex, _cey, _cez ,
+                  _ceq,
+                  _dex, _dey, _dez ,
+                  _deq;
+        ia_flt    _aexbey, _bexaey ,
+                  _aexcey, _cexaey ,
+                  _bexcey, _cexbey ,
+                  _cexdey, _dexcey ,
+                  _dexaey, _aexdey ,
+                  _bexdey, _dexbey ;
+        ia_flt    _ab_, _bc_, _cd_, _da_,
+                  _ac_, _bd_;
+        ia_flt    _abc, _bcd, _cda, _dab;
+        ia_flt    _sgn;
+
+        ia_rnd    _rnd;                   // up rounding!
+
+        _aex.from_sub(_pa[0], _pe[0]) ;   // coord. diff.
+        _aey.from_sub(_pa[1], _pe[1]) ;
+        _aez.from_sub(_pa[2], _pe[2]) ;
+        _aeq.from_sub(_pa[3], _pe[3]) ;
+
+        _bex.from_sub(_pb[0], _pe[0]) ;
+        _bey.from_sub(_pb[1], _pe[1]) ;
+        _bez.from_sub(_pb[2], _pe[2]) ;
+        _beq.from_sub(_pb[3], _pe[3]) ;
+
+        _cex.from_sub(_pc[0], _pe[0]) ;
+        _cey.from_sub(_pc[1], _pe[1]) ;
+        _cez.from_sub(_pc[2], _pe[2]) ;
+        _ceq.from_sub(_pc[3], _pe[3]) ;
+
+        _dex.from_sub(_pd[0], _pe[0]) ;
+        _dey.from_sub(_pd[1], _pe[1]) ;
+        _dez.from_sub(_pd[2], _pe[2]) ;
+        _deq.from_sub(_pd[3], _pe[3]) ;
+
+        _aexbey = _aex * _bey ;           // 2 x 2 minors
+        _bexaey = _bex * _aey ;
+        _ab_ = _aexbey - _bexaey ;
+
+        _bexcey = _bex * _cey;
+        _cexbey = _cex * _bey;
+        _bc_ = _bexcey - _cexbey ;
+
+        _cexdey = _cex * _dey;
+        _dexcey = _dex * _cey;
+        _cd_ = _cexdey - _dexcey ;
+
+        _dexaey = _dex * _aey;
+        _aexdey = _aex * _dey;
+        _da_ = _dexaey - _aexdey ;
+
+        _aexcey = _aex * _cey;
+        _cexaey = _cex * _aey;
+        _ac_ = _aexcey - _cexaey ;
+
+        _bexdey = _bex * _dey;
+        _dexbey = _dex * _bey;
+        _bd_ = _bexdey - _dexbey ;
+
+        _abc =                            // 3 x 3 minors
+          _aez * _bc_ - _bez * _ac_
+        + _cez * _ab_ ;
+
+        _bcd =
+          _bez * _cd_ - _cez * _bd_
+        + _dez * _bc_ ;
+
+        _cda =
+          _cez * _da_ + _dez * _ac_
+        + _aez * _cd_ ;
+
+        _dab =
+          _dez * _ab_ + _aez * _bd_
+        + _bez * _da_ ;
+
+        _sgn =                            // 4 x 4 result
+          _deq * _abc - _ceq * _dab
+        + _beq * _cda - _aeq * _bcd ;
+
+        _OK =
+          _sgn.lo() >= (REAL_TYPE)0.
+        ||_sgn.up() <= (REAL_TYPE)0.;
+
+        return ( _sgn.mid() ) ;
+    }
+
+    __normal_call REAL_TYPE orient4d_f (
+      __const_ptr(REAL_TYPE) _pa ,
+      __const_ptr(REAL_TYPE) _pb ,
+      __const_ptr(REAL_TYPE) _pc ,
+      __const_ptr(REAL_TYPE) _pd ,
+      __const_ptr(REAL_TYPE) _pe ,
+        bool_type &_OK
+        )
+    {
+    /*--------------- orient4d predicate, "float" version */
+        REAL_TYPE static const _ER =
+        + 13. * std::pow(mp::_epsilon, 1) ;
+
+        REAL_TYPE _aex, _aey, _aez ,
+                  _aeq,
+                  _bex, _bey, _bez ,
+                  _beq,
+                  _cex, _cey, _cez ,
+                  _ceq,
+                  _dex, _dey, _dez ,
+                  _deq;
+        REAL_TYPE _aexbey, _bexaey ,
+                  _aexcey, _cexaey ,
+                  _bexcey, _cexbey ,
+                  _cexdey, _dexcey ,
+                  _dexaey, _aexdey ,
+                  _bexdey, _dexbey ;
+        REAL_TYPE _ab_, _bc_, _cd_, _da_,
+                  _ac_, _bd_;
+        REAL_TYPE _abc, _bcd, _cda, _dab;
+
+        REAL_TYPE _AEZ, _BEZ, _CEZ, _DEZ;
+        REAL_TYPE _AEQ, _BEQ, _CEQ, _DEQ;
+        REAL_TYPE _AEXBEY, _BEXAEY ,
+                  _CEXAEY, _AEXCEY ,
+                  _BEXCEY, _CEXBEY ,
+                  _CEXDEY, _DEXCEY ,
+                  _DEXAEY, _AEXDEY ,
+                  _BEXDEY, _DEXBEY ;
+        REAL_TYPE _AB_, _BC_, _CD_, _DA_,
+                  _AC_, _BD_;
+        REAL_TYPE _ABC, _BCD, _CDA, _DAB;
+
+        REAL_TYPE _sgn, _FT ;
+
+        _aex = _pa [0] - _pe [0] ;        // coord. diff.
+        _aey = _pa [1] - _pe [1] ;
+        _aez = _pa [2] - _pe [2] ;
+        _aeq = _pa [3] - _pe [3] ;
+
+        _AEZ = std::abs (_aez) ;
+        _AEQ = std::abs (_aeq) ;
+
+        _bex = _pb [0] - _pe [0] ;
+        _bey = _pb [1] - _pe [1] ;
+        _bez = _pb [2] - _pe [2] ;
+        _beq = _pb [3] - _pe [3] ;
+
+        _BEZ = std::abs (_bez) ;
+        _BEQ = std::abs (_beq) ;
+
+        _cex = _pc [0] - _pe [0] ;
+        _cey = _pc [1] - _pe [1] ;
+        _cez = _pc [2] - _pe [2] ;
+        _ceq = _pc [3] - _pe [3] ;
+
+        _CEZ = std::abs (_cez) ;
+        _CEQ = std::abs (_ceq) ;
+
+        _dex = _pd [0] - _pe [0] ;
+        _dey = _pd [1] - _pe [1] ;
+        _dez = _pd [2] - _pe [2] ;
+        _deq = _pd [3] - _pe [3] ;
+
+        _DEZ = std::abs (_dez) ;
+        _DEQ = std::abs (_deq) ;
+
+        _aexbey = _aex * _bey;            // 2 x 2 minors
+        _bexaey = _bex * _aey;
+        _ab_ = _aexbey - _bexaey ;
+
+        _AEXBEY = std::abs (_aexbey) ;
+        _BEXAEY = std::abs (_bexaey) ;
+        _AB_ = _AEXBEY + _BEXAEY ;
+
+        _bexcey = _bex * _cey;
+        _cexbey = _cex * _bey;
+        _bc_ = _bexcey - _cexbey ;
+
+        _BEXCEY = std::abs (_bexcey) ;
+        _CEXBEY = std::abs (_cexbey) ;
+        _BC_ = _BEXCEY + _CEXBEY ;
+
+        _cexdey = _cex * _dey;
+        _dexcey = _dex * _cey;
+        _cd_ = _cexdey - _dexcey ;
+
+        _CEXDEY = std::abs (_cexdey) ;
+        _DEXCEY = std::abs (_dexcey) ;
+        _CD_ = _CEXDEY + _DEXCEY ;
+
+        _dexaey = _dex * _aey;
+        _aexdey = _aex * _dey;
+        _da_ = _dexaey - _aexdey ;
+
+        _DEXAEY = std::abs (_dexaey) ;
+        _AEXDEY = std::abs (_aexdey) ;
+        _DA_ = _DEXAEY + _AEXDEY ;
+
+        _aexcey = _aex * _cey;
+        _cexaey = _cex * _aey;
+        _ac_ = _aexcey - _cexaey ;
+
+        _AEXCEY = std::abs (_aexcey) ;
+        _CEXAEY = std::abs (_cexaey) ;
+        _AC_ = _AEXCEY + _CEXAEY ;
+
+        _bexdey = _bex * _dey;
+        _dexbey = _dex * _bey;
+        _bd_ = _bexdey - _dexbey ;
+
+        _BEXDEY = std::abs (_bexdey) ;
+        _DEXBEY = std::abs (_dexbey) ;
+        _BD_ = _BEXDEY + _DEXBEY ;
+
+        _abc =                            // 3 x 3 minors
+          _aez * _bc_ - _bez * _ac_
+        + _cez * _ab_ ;
+        _ABC =
+          _AEZ * _BC_ + _BEZ * _AC_
+        + _CEZ * _AB_ ;
+
+        _bcd =
+          _bez * _cd_ - _cez * _bd_
+        + _dez * _bc_ ;
+        _BCD =
+          _BEZ * _CD_ + _CEZ * _BD_
+        + _DEZ * _BC_ ;
+
+        _cda =
+          _cez * _da_ + _dez * _ac_
+        + _aez * _cd_ ;
+        _CDA =
+          _CEZ * _DA_ + _DEZ * _AC_
+        + _AEZ * _CD_ ;
+
+        _dab =
+          _dez * _ab_ + _aez * _bd_
+        + _bez * _da_ ;
+        _DAB =
+          _DEZ * _AB_ + _AEZ * _BD_
+        + _BEZ * _DA_ ;
+
+        _FT  =                            // roundoff tol
+          _DEQ * _ABC + _CEQ * _DAB
+        + _BEQ * _CDA + _AEQ * _BCD ;
+
+        _FT *= _ER ;
+
+        _sgn =                            // 4 x 4 result
+          _deq * _abc - _ceq * _dab
+        + _beq * _cda - _aeq * _bcd ;
+
+        _OK  =
+          _sgn > _FT || _sgn < -_FT ;
+
+        return ( _sgn ) ;
+    }
 
 
